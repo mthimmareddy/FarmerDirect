@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link href="{{url_for('static',filename='css/login.css')}}" rel='stylesheet' type='text/css'/><!-- style.css -->
+<div class="container">
+    <div class="row">
+      <div class="col-md-5 col-md-offset-3">
+
+  <h1>Log in</h1>
+
+  <p> {{error}} </p>
+
+  <form class="form" action="/login" method="post"><input type='hidden' name='csrfmiddlewaretoken' value='WPrk4Az1w6ftHL9LapV6Gy3AcC2vHWI5kgGWRphAMpaoCn9nFyBDC9BPXyTkwt8R' />
+    <table>
+  <style type="text/css" scoped>
+    /* hide stupid updowney arrows on number input */
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+
+
+
+<p class="form-group">
+  <input type="text" name="email" placeholder="Username or email address" tabindex="1" autocorrect="off" autocapitalize="off" class="form-control" maxlength="100" required id="id_auth-username" />
+  <span class="help-block">
+    No account? <a href="/registerationForm?isadmin={{isadmin}}">Sign up here!</a>
+  </span>
+</p>
+<p class="form-group">
+  <input type="password" name="password" placeholder="Password" tabindex="2" class="form-control" required id="id_auth-password" />
+  <span class="help-block">
+    <a href="/ForgotForm">Forgotten password?</a>
+  </span>
+</p>
+<div class="clear"></div>
+
+</table>
+
+
+	  <div style="margin-left: -9999px"><input type="submit" value=""/></div>
+	  <button id="id_next" type="submit" class="btn btn-primary">Log in</button>
+
+  </form>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+{% endblock content %}

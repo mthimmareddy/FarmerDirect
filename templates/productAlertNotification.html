@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 col-md-offset-3">
+      <div class="well">
+
+        <h1>Product Alert</h1>
+
+        <p>
+         This item isn't available right now, but we’ll send you an email as soon as it’s back in stock.
+        </p>
+        <form action="#"  method="post">
+            <input type='hidden' name='csrfmiddlewaretoken' value='FaJtovsg8apP7QNHYQGBUph9cxgjtNiA49HgSOup0UKu1RyXTAKMQxqNFXCeo6re' />
+          <div class="form-group">
+              <input id="id_email" type="email" name="email" class="form-control" placeholder="your.email@example.com" >
+          </div>
+          <button type="submit" class="btn btn-primary" id="id_reset_password_submit">Send</button>
+        </form>
+        <br />
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock content %}

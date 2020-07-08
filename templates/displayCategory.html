@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .container{
+    font-size:16px;
+    font-family:verdana;
+    }
+</style>
+
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12">
+			<a href="/displayProducerPage?producerid=2#prod1">Checkout otther categories</a>
+	<div class="row">
+		<div class="col-md-12">
+             {% for item in data %}
+             <div class="col-md-3"><br/>
+                 <form action="/addToCart?productId={{item.productid}}&numproduct={{val}}" method="POST" type="submit" onsubmit="return validate();">
+            <table  class="table table-light" id="descriptionTable1">
+
+			<tr>
+				<th scope="col"> <strong>{{item.product_name}}</strong></td>
+			</tr>
+              <tr>
+                  <td scope="row">
+					  <a href="/productDescription?productId={{item.productid}}">
+						  <img src={{url_for('static', filename='uploads/' + item.image) }} id="itemImage" /></a></td>
+              </tr>
+
+
+				<tr>
+				 <td scope="row">Product Price:</td>
+				 <td scope="row">Rs{{item.regular_price}}</td>
+			 </tr>
+				       {% if item.quantity > 0 %}
+                       <tr>
+
+                        <td scope="row">Quantity:</td>
+
+                        <td scope="row"><select  name="numproduct" size="1" placeholder="product" >
+                                {% for val in range(1,10) %}
+                            <option value="{{val}}">{{val}}</option>
+                                {% endfor %}
+                        </select></td>
+					   </tr>
+				       <tr>
+						<td scope="row" class="col-md-6">
+						<button class="btn btn-info" type="submit" value="Add Cart" id="sub2">ADD CART</button>
+						</td>
+					     </tr>
+
+                          {%else%}
+				         <tr>
+
+                          <td scope="row">Quantity:
+							 <td scope="row" style="background:red">OutofStock</td></tr>
+				          <tr>
+						<td scope="row" class="col-md-6">
+						<button class="btn btn-info"><a href="/productAlertNotification">NOTIFY ME</a></button>
+						</td>
+					     </tr>
+				        {% endif %}
+
+
+            </table>
+		 </form>
+		 </div>
+			 {% endfor %}
+		 </div>
+	</div>
+{% endblock content %}
+

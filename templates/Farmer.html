@@ -1,0 +1,54 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Profile</h3>
+                  </div>
+                  <div class="panel-body">
+                    View and edit profile
+                  </div>
+                  <div>
+                      <a class="btn btn-success" href="{{ url_for('getUsers') }}">Click here</a>
+                  </div>
+                </div>
+            </div>
+
+             <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Products</h3>
+                  </div>
+                  <div class="panel-body">
+                    View and edit products
+                  </div>
+                  <div>
+                      <a class="btn btn-success" href="/getproducts?userid={{userid}}">Click here</a>
+                  </div>
+                </div>
+            </div>
+
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Rental Products</h3>
+                      </div>
+                      <div class="panel-body">
+                        View and edit products
+                      </div>
+                      <div>
+                          <a class="btn btn-success" href="{{ url_for('addRentalProduct') }}">Click here</a>
+                      </div>
+                    </div>
+                </div>
+
+
+
+
+
+    </div>
+    </div>
+{% endblock content %}

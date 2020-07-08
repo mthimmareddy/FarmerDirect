@@ -1,0 +1,119 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+
+                      <div class="row">
+                        <div class="col-md-6 style="margin-top:20px;margin-left:70px;">
+
+                            <div class="col-md-6">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Rental Categories</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit categories
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="{{ url_for('addRentalCategory') }}">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Rental Products</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit products
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="{{ url_for('addRentalProduct') }}">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Categories</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit categories
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="{{ url_for('getCategories') }}">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Products</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit products
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="{{ url_for('getProducts') }}">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Users</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit Users
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="#">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+
+                            <div class="col-md-6">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Bookings</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit Bookings
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="{{ url_for('getallBookings') }}">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Products</h3>
+                              </div>
+                              <div class="panel-body">
+                                View and edit products
+                              </div>
+                              <div>
+                                  <a class="btn btn-success" href="{{ url_for('getProducts') }}">Click here</a>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+
+
+
+</div>
+
+
+
+
+
+<footer class="container-fluid">
+  <p>Footer Text</p>
+</footer>
+
+{% endblock content %}

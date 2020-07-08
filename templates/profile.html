@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-12" style="margin-top:100px;">
+
+					<a class="link" href="#">
+						<img src={{url_for('static', filename='uploads/farm1.png')}} id="farmIcon" />
+					</a>
+
+					</div>
+                <div class="profile-img">
+                    <a href="#">
+                        <img src="static/uploads/cake.png" alt="" title="">
+                    </a>
+                </div>
+                <div class="profile-name">
+                    <h2>mthimmareddy</h2>
+                </div>
+
+                <div class="fb-profile-block-menu">
+                    <div class="block-menu">
+                        <ul>
+                           <li><a class="active" href="#info1" >Info</a></li>
+                            <li><a class="active" href="#info1" >Home</a></li>
+                            <li><a class="active" href="#prod1" >Products</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Opening Hours</a></li>
+                            <li><a href="#">Catalog</a></li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+
+
+               <div class="col-sm-12" id="info1" >
+		<h2>WELCOME TO {{Producername}} FARM</h2>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+	</div>
+
+	<div id="prod1" class="col-md-12" >
+		<h2>SHOWING ALL CATEGORIES LISTED BY {{Producername}}</h2>
+		<ul>
+			{% for row in CategoryData %}
+			<li id="category1" class="col-md-12" >
+				<a href="/displayProductsByProducer?categoryid={{row.categoryid}}&producerid={{row.producerid}}">{{row.category_name}}</a>
+				<a  href="/displayProductsByProducer?categoryid={{row.categoryid}}&producerid={{row.producerid}}">
+				<img src={{url_for('static', filename='uploads/' + row.category_image) }} id="catIcon" />
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+
+            <div  class="col-md-12" >
+            <h2> Google Dev Bus - Rua Quatá, 255 </h2>
+            {% with %}
+
+                {% set location=(-23.599097,-46.675903) %}
+                {% set style="width:500px;height:500px;"%}
+
+                {{
+                googlemap(
+                    "simple-map",
+                    location.0, location.1,
+                    markers=[location,],
+                    style=style
+                    )
+                }}
+
+            {% endwith %}
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+{% endblock content %}

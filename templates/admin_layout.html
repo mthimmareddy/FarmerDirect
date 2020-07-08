@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Farm Direct</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Droid+Serif" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/util.css') }}>
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/main.css') }}>
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/home.css') }}>
+
+
+</head>
+<style>
+.navbar-default {
+    background-color: black; /*#f8f8f8;*/
+    /*color: #0f400f; 1d730e*/
+}
+
+.navbar-default, .navbar-default .navbar-nav>li>a, .navbar-default .navbar-brand, #prod-search {
+    color: #007a08;
+}
+.table{background:white;font-size:16px;}
+    .sidenav{background:black;height:700px;}
+    .container{border:1px solid #cecece;}
+
+
+</style>
+
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+			<a class="navbar-brand" href="/home"><div><img src="static/images/FDlogo.png" style="margin-top:0;width:40px;height:30px;" ></div></a>
+
+			   <a class="navbar-brand logotext" href="/admin">ADMIN PORTAL</a>
+
+
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+
+            {% if 'email' in session %}
+            <li><a href="/home"><i class="fa fa-home" style="font-size:24px;"></i></a></li>
+
+            <li><a href="/account">Hi {{firstName}}</a></li>
+            <li><a href="/logout">Log Out</a></li>
+            {% else %}
+            <li><a href="" data-toggle="modal" data-target="#LoginModal" id="loginNav">Login</a></li>
+            {% endif %}
+            <li><a href="/cart"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"><span class="sr-only">Shopping Cart</span></span></a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+
+</header>
+<body>
+
+  <div class="container-fluid">
+        <div class="row">
+        <div class="col-md-2 sidenav">
+                     <div class="nav nav-pills nav-stacked">
+                         <li><a href="/account">{{firstName}}</a></li><hr>
+                         {% if isadmin==2 %}
+
+                         <li ><a id="id_dashboard_link" href="/admin">DASHBOARD</a></li>
+                         {%else%}
+                           <li ><a id="id_dashboard_link" href="{{url_for('farmer')}}">DASHBOARD</a></li>
+                         {%endif%}
+
+
+                         <li class="dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      PROFILE</a>
+                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                                         <li><a class="dropdown-item" href="/account"> VIEW PROFILE</a></li>
+                                         <li><a class="dropdown-item" href="/updateprofile?userid={{userid}}"> UPDATE PROFILE</a></li>
+
+
+                                      </ul>
+                          </li>
+
+                          <li class="dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      PRODUCTS </a>
+                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                                         <li><a class="dropdown-item" href="{{url_for('addProduct')}}"> ADD NEW PRODUCT</a></li>
+                                         <li><a class="dropdown-item" href="/getproducts?userid={{userid}}"> MANAGE PRODUCTS</a></li>
+
+
+                                      </ul>
+                          </li>
+
+
+                           <li class="dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      RENTAL PRODUCTS </a>
+                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                         <li><a class="dropdown-item" href="/rentalproduct/new"> ADD NEW RENT PRODUCT</a></li>
+                                         <li><a class="dropdown-item" href="/getrentalproducts?userid={{userid}}"> MANAGE PRODUCTS</a></li>
+
+
+                                      </ul>
+                          </li>
+
+                         <li class="dropdown">
+                             <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               BOOKINGS  </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                     <li><a class="dropdown-item" href="/bookingForm"> ADD NEW BOOKING</a></li>
+                                     <li><a class="dropdown-item" href="{{ url_for('getallBookings')}}"> MANAGE BOOKINGS</a></li>
+
+                                </ul>
+                             </li>
+
+
+
+                          {% if isadmin==2 %}
+
+                          <li class="dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          ADMIN</a>
+                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                             <li> <a class="dropdown-item" href="#"> MANAGE FARMERS   </a></li>
+                                             <li> <a class="dropdown-item" href="#"> MANAGE CATEGORIES </a></li>
+                                             <li><a class="dropdown-item" href="{{url_for('addCategory')}}"> ADD NEW CATEGORY</a></li>
+                                             <li> <a class="dropdown-item" href="{{url_for('addRentalCategory')}}"> ADD NEW RENTALCATEGORY</a></li>
+
+                                             <li><a class="dropdown-item" href="#"> MANAGE ALL PRODUCTS </a></li>
+                                             <li><a class="dropdown-item" href="#"> MANAGE ALL BOOKINGS  </a></li>
+
+
+                                         </ul>
+                          </li>
+                         {% endif %}
+
+                     </div>
+              </div>
+
+
+
+
+
+{% block content %}{% endblock %}
+
+
+
+
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script type="text/javascript" src={{url_for('static', filename='js/shop-hours.js')}}></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="display">
+
+	<h2>Showing all products of Location :</h2>
+	{% for itemData in data %}
+	<table>
+		<tr id="productName">
+			{% for row in itemData %}
+			<td>
+				{{row['name']}}
+			</td>
+			{% endfor %}
+		</tr>
+		<tr id="productImage">
+			{% for row in itemData %}
+			<td>
+				<a href="/productDescription?Location={{row.productid}}">
+					<img src={{ url_for('static', filename='uploads/' + row.image) }} id="itemImage" />
+				</a>
+			</td>
+			{% endfor %}
+		</tr>
+		<tr id="productPrice">
+			{% for row in itemData %}
+			<td>
+				Rs {{row.regular_price}}
+			</td>
+			{% endfor %}
+		</tr>
+	</table>
+	{% endfor %}
+</div>
+{% endblock content %}

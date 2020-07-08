@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/profile.css') }}>
+<div class="container">
+    <h2>WELCOME TO {{Producername}} FARM</h2>
+
+     <div class="row">
+
+        <div class="col-md-12">
+            <div class="col-md-12" style="margin-top:100px;">
+
+					<a class="link" href="#">
+						<img src={{url_for('static', filename='images/farm.jpg')}} id="farmIcon" />
+					</a>
+
+					</div>
+                <div class="profile-img">
+                    <a href="#">
+                        <img src={{url_for('static', filename='uploads/'+profile)}} alt="" title="">
+                    </a>
+                </div>
+                <div class="profile-name">
+                    <h2>{{Producername}}</h2>
+                </div>
+
+                <div class="fb-profile-block-menu">
+                    <div class="block-menu" >
+                        <ul  style="margin-top:5px;">
+                            <li><a class="active" href="#info1" >Home</a></li>
+                            <li><a class="active" href="#prod1" >Products</a></li>
+                            <li><a href="#rent">Rental Products</a></li>
+                            <li><a href="#openinghours">Opening Hours</a></li>
+                            <li><a href="#locateus">Location</a></li>
+                        </ul>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <div class="row">
+		<div class="col-sm-12" id="info1" >
+
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+		<p>{{farmdescription}}</p>
+	</div>
+    </div>
+
+
+    <div class="row orange news-box">
+        <div class="col-sm-12" id="locateus" >
+            <a href="#"><h2>Locate Us</h2></a>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d11775.588813978113!2d-83.43233654999999!3d42.45120325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2sChitradurga%2C%20Karnataka%2C%20India3980464!5e0!3m2!1sen!2sus!4v1593978852367!5m2!1sen!2sus" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+     <div class="row">
+		<div id="openinghours" class="col-md-12" >
+		<section class="openinghours">
+    	<div class="openinghourscontent section">
+        <div class="header">
+             <h2>Opening hours</h2>
+
+        </div>
+        <table class="table">
+            <tr id="Monday" itemprop="openingHours" title="Open Monday at 9am to 6pm">
+                <td>Monday</td>
+                <td class="opens">09:00</td>
+                <td>-</td>
+                <td class="closes">18:00</td>
+            </tr>
+            <tr id="Tuesday" itemprop="openingHours" title="Open Tuesday at 9am to 6pm">
+                <td>Tuesday</td>
+                <td class="opens">09:00</td>
+                <td>-</td>
+                <td class="closes">18:00</td>
+            </tr>
+            <tr id="Wednesday" itemprop="openingHours" title="Open Wednesday at 9am to 6pm">
+                <td>Wednesday</td>
+                <td class="opens">09:00</td>
+                <td>-</td>
+                <td class="closes">18:00</td>
+            </tr>
+            <tr id="Thursday" itemprop="openingHours" title="Open Thursday at 9am to 8pm">
+                <td>Thursday</td>
+                <td class="opens">09:00</td>
+                <td>-</td>
+                <td class="closes">20:00</td>
+            </tr>
+            <tr id="Friday" itemprop="openingHours" title="Open Friday at 9am to 6pm">
+                <td>Friday</td>
+                <td class="opens">09:00</td>
+                <td>-</td>
+                <td class="closes">18:00</td>
+            </tr>
+            <tr id="Saturday" itemprop="openingHours" title="Open Saturday at 10am to 6pm">
+                <td>Saturday</td>
+                <td class="opens">10:00</td>
+                <td>-</td>
+                <td class="closes">18:00</td>
+            </tr>
+            <tr id="Sunday" itemprop="openingHours" title="Open Sunday at 11am to 4pm">
+                <td>Sunday</td>
+                <td class="opens">11:00</td>
+                <td>-</td>
+                <td class="closes">16:00</td>
+            </tr>
+        </table>
+         <button type="submit" class="col-md-2 form-control btn btn-warning"  aria-label="Click to search">
+             <a href="/farmvisit">Make Appointment for Farm Visit</a>
+         </button>
+        <!--<script>
+            (function(e, t, n, r) {
+                if (e) return;
+                t._appt = true;
+                var i = n.createElement(r),
+                    s = n.getElementsByTagName(r)[0];
+                i.async = true;
+                i.src = '//dje0x8zlxc38k.cloudfront.net/loaders/s-min.js';
+                s.parentNode.insertBefore(i, s)
+            })(window._appt, window, document, "script")
+        </script>-->
+		</div>
+	</section>
+	</div>
+     </div><br/><br>
+
+    <div class="row">
+        <span class="border border-primary">
+	    <div id="rentprod1" class=" ylow news-box col-md-12" >
+
+		<h2>SHOWING ALL RENTAL CATEGORIES LISTED BY {{Producername}}</h2>
+		<ul>
+			{% for row in RentalCategoryData %}
+
+			<li id="rentcategory1" class="col-md-12" >
+				<a href="/displayProductsByProducer?rentcategoryid={{row.categoryid}}&producerid={{row.producerid}}" style="color:blue;">{{row.category_name.upper()}}</a>
+				<!--<a  href="/displayProductsByProducer?rentcategoryid={{row.categoryid}}&producerid={{row.producerid}}">
+				<img src={{url_for('static', filename='uploads/' + row.category_image) }} id="catIcon" />
+				</a>-->
+			</li>
+			{% endfor %}
+		</ul>
+    </div></span>
+    </div><br><br>
+
+    <div class="row">
+	<div id="prod1" class="col-md-12" >
+		<h2>SHOWING ALL CATEGORIES LISTED BY {{Producername}}</h2>
+		<ul>
+			{% for row in CategoryData %}
+			<li id="category1" class="col-md-12" >
+				<a href="/displayProductsByProducer?categoryid={{row.categoryid}}&producerid={{row.producerid}}" style="color:blue;">{{row.category_name.upper()}}</a>
+				<a  href="/displayProductsByProducer?categoryid={{row.categoryid}}&producerid={{row.producerid}}">
+				<img src={{url_for('static', filename='uploads/' + row.category_image) }} id="catIcon" />
+                </a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock content %}

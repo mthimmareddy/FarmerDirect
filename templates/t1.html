@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/util.css') }}>
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/main.css') }}>
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/home.css') }}>
+    <style>
+	    .navbar-brand
+	    {color:red;}
+
+	  ul a{margin:20px 0px 0px 40px;}
+
+
+	h2{
+    background : gray;
+    text-align : center;
+	padding:10px
+	font-size:14px;}
+
+	.container a{
+	color:blue;
+	font-size:16pts;
+	}
+
+	body
+	{background : #D3D3D3;}
+	</style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="index.html"><img src="static/images/FDlogo.png" width="100" alt="FarmDirect" title="Anvayaa" id="main-logo" style="margin-top:0;width:50px;height:50px;">
+				 </a>
+
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="/"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+        {% if not loggedIn %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <span class="glyphicon glyphicon-log-in"></span> Login </a>
+					 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						 <a class="dropdown-item" href="/signInF" ><i class='fa fa-user-md' style='font-size:16px'> Farmer </i></a>
+						 <a class="dropdown-item" href="/signInC"><i class='fa fa-user' style='font-size:16px'> Customer</i></a>
+						 <a class="dropdown-item" href="/signIn"><i class='fa fa-user-secret' style='font-size:16px'> Admin </i></a>
+					 </div>
+
+				 </li>
+				{% else %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  Hello {{firstName}} </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					  <a class="dropdown-item" href="/logout">Sign Out </a>
+					</div>
+				 </li>
+				{% endif %}
+
+                  <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                   <li class="nav-item"><a href="/cart" class="nav-link">Cart {{productCountinKartForGivenUser}}</a></li>
+
+
+    </ul>
+  </div>
+</nav>
+{% block content %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12"><br/>
+                     {% for data in data %}
+                     <div class="col-md-3"><br/>
+                         <!-- Optional JavaScript -->
+
+                <!---- <form action="/addToCart?productId={{data.productid}}&rent=True&numdays={{item}}" method="POST" type="submit" onsubmit="return validate();">
+                   --><form action="/addToCart?productId={{data.productid}}&numproduct={{item}}" method="POST" type="submit" onsubmit="return validate();">
+                     <table  class="table table-light" id="descriptionTable">
+                    <tr>
+                        <th scope="col"> <strong>{{data.product_name}}</strong></td>
+                    </tr>
+                      <tr>
+                          <td scope="row">
+                              <img src={{url_for('static', filename='uploads/' + data.image) }} id="itemImage" /></td>
+                      </tr>
+                     <tr><td scope="row">Product Price:Rs{{data.regular_price}}</td>
+                     </tr>
+
+                      <tr>
+                        {% if data.quantity > 0 %}
+                        <td scope="row">Quantity:</td>
+
+                        <td scope="row"><select  name="numproduct" size="1" placeholder="product" >
+                                {% for item in range(1,10) %}
+                            <option value="{{item}}">{{item}}</option>
+                                {% endfor %}
+                        </select></td>
+
+                          {%else%}
+
+                          <td scope="row">Quantity:
+                          <td scope="row" style="background:red">OutofStock</td>
+
+                          {% endif %}
+                      </tr>
+                     <tr>
+                       {% if rent %}
+                            <td scope="row" class="col-md-6">
+							<button class="btn btn-info" type="submit" value="Add Cart" id="sub1">
+                                <a href="/rentalproductDescription?productid={{data.productid}}">CHECK AVAILABILITY</a></button></td>
+							{%else%}
+                            <td scope="row" class="col-md-2">
+                              <button class="btn btn-info" type="submit" value="Add Cart" id="sub2">ADD CART</button></td>
+
+
+							{%endif%}
+
+
+                     </tr>
+                    </table></form>
+                    </div>
+
+
+                {% endfor %}</div>
+
+
+
+</div>
+</div>
+
+{% endblock content %}
+

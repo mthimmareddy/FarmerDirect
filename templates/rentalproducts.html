@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+
+
+
+    <div class="row">
+
+        <div class="col-md-12" >
+            <!---
+            <div class="col-md-6"><h2>RENT OUT PRODUCTS:</h2><br></div>
+            <div class="col-md-6"><button class="btn btn-info" type="submit" value="Buy Now" id="sub2"><a href="/bookingForm">RENT NOW</a></button>
+                 </div><hr><br/><br/></div>-->
+
+
+
+		 <div class="col-md-12" >
+			 <h2>RENT BY CATEGORY</h2><br></div>
+                <ul class="col-md-12">
+                    {% for row in categoryData %}
+                    <li class="col-md-12"><a href="/displayRentalCategory?categoryid={{row.categoryid}}">{{row.category_name}}
+                        <img src="{{row.category_image}}" alt="" style="width:30%;"></a>
+                    </li>
+                     {% endfor %}
+                </ul><br/>
+
+             <hr><br/><br/>
+
+
+
+
+
+                <div class="col-md-12"><br/>
+                    <h2>{{msg2}}</h2></div>
+                 <div class="col-md-12"><br/>
+                     {% for data in rentalproducts %}
+                     <div class="col-md-3"><br/>
+                         <!-- Optional JavaScript -->
+                <!---- <form action="/addToCart?productId={{data.productid}}&rent=True&numdays={{item}}" method="POST" type="submit" onsubmit="return validate();">
+                   --><form action="#" method="POST" type="submit" onsubmit="return validate();">
+                     <table  class="table table-light" id="descriptionTable">
+                            <tr>
+                                <th scope="col"> <strong>{{data.product_name}}</strong></td>
+                            </tr>
+
+                                  <td scope="row">
+                                      <a href="/rentalproductDescription?productid={{data.productid}}">
+                                          <img src={{url_for('static', filename='uploads/' + data.image) }} id="itemImage" /></a></td>
+                              </tr>
+
+                              <tr>
+
+                                <td scope="row">Product Price/Day:</td>
+
+                                <td scope="row">{{data.regular_price}}</td>
+                              </tr>
+                            <tr>
+
+                                <td scope="row">
+                                <button id="id_location" type="submit" class="btn btn-primary"><a href="/rentalproductDescription?productid={{data.productid}}">CHECK AVAILABILITY</a></button>
+                                </td>
+                            </tr>
+
+
+                    </table></form>
+                 </div>
+
+                {% endfor %}</div>
+        <hr>
+
+
+
+
+
+      </div>
+</div>
+
+
+
+{% endblock content %}
+

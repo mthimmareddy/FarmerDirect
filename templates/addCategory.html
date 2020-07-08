@@ -1,0 +1,43 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+    <div class="row">
+             <div class="col-md-9" style="margin-top:20px;margin-left:40px;">
+                <form action="" method="POST">
+                        {{ form.hidden_tag() }}
+
+                    <div class="form-group">
+                            {% if category_icon %}
+                                <img src="{{ category_icon }}" alt="">
+                            {% endif %}
+                    </div>
+                        <div class="form-group">
+                            {{ form.category_image.label }}
+                            {{ form.category_image(class="form-control-file") }}
+                            {% if form.category_image.errors %}
+                                {% for error in form.category_image.errors %}
+                                    <span class="text-danger">{{ error }}</span></br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.category_name.label }}
+                            {% if form.category_name.errors %}
+                                {{ form.category_name(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.category_name.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.category_name}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-info") }}
+                        </div>
+
+                </form>
+    </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+
+
+
+      <div class="wrapper grid isBound">
+        <!--Page product starts -->
+<div class="row col__12-12">
+  <div class="pod alpha omega product-wrapper">
+    <div class="left-side-wrapper">
+      <div class="headline">
+        <h2 class="vendor left">
+          Bon Tool
+        </h2>
+                <span class="category_group left">
+                    | <em>category #08 group #826</em>
+                </span>
+      </div>
+      <h2 class="hero">Post Hole Digger</h2>
+      <!--<div id="BVRRSummaryContainer"></div>-->
+    </div>
+    <div class="col__6-12">
+
+      <div class="feature">
+        <div class="big-images">
+          <ul id="carousel-images">
+            <li id="Post-Hole-Digger_BonTool-lg" class="active">
+              <img data-pin-no-hover="true" src="../../assets/img/Bon-Tool/336x336/Post-Hole-Digger-BonTool-lg.jpg"  alt="Post Hole Digger" />
+            </li>
+            <li id="Post-Hole-Digger_BonTool-lg-2">
+              <img data-pin-no-hover="true" src="../../assets/img/Bon-Tool/336x336/Post-Hole-Digger-BonTool-lg-2.jpg"  alt="Post Hole Digger" />
+            </li>
+          </ul>
+        </div>
+        <div class="carousel-wrapper">
+          <ul id="carousel-thumbs">
+            <li class="slide active">
+              <a href="#" data-show="Post-Hole-Digger_BonTool-lg">
+                <img src="../../assets/img/Bon-Tool/60x60/Post-Hole-Digger-BonTool-sm.jpg" alt="Post Hole Digger" />
+              </a>
+            </li>
+            <li class="slide">
+              <a href="#" data-show="Post-Hole-Digger_BonTool-lg-2">
+                <img src="../../assets/img/Bon-Tool/60x60/Post-Hole-Digger-BonTool-sm-2.jpg" alt="Post Hole Digger" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="social-toolbar">
+        <ul>
+          <li class="facebook">
+            <div class="fb-share-button" data-href="//www.homedepot.com/tool-truck-rental/Post-Hole-Digger/14-854/" data-type="button"></div>
+          </li>
+          <li class="email">
+            <a href=""></a>
+          </li>
+          <li class="print"><a href="javascript:window.print()"></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col__6-12">
+      <div class="product-info">
+        <div class="description">
+          <div class="wrapper">
+            <h2>Description</h2>
+            <em class="product-model" data-productModel="14-854">Model # 14-854</em>
+            <p><ul>
+            <li>	Digs up to a 6" diameter hole </li>
+            <li>	Fiberglass handles are 4’ long </li>
+            <li>	Blades are sharpened carbon steel to assist in cutting through sod and compacted soil </li>
+</ul>
+</p>
+          </div>
+          <a href="" class="toggle-link hidden" data-state="hidden">
+            <span class="full">View Full Description</span>
+            <span class="less">View Less</span>
+            <i class="i-right"></i>
+          </a>
+
+        </div>
+
+        <!-- BEGIN TOOL RENTAL AND AVAILABILITY WIDGET -->
+        <div id="rental-availability" ng-cloak ng-controller="RentalController" ng-init="toolCategoryNumber=08; toolSubClassNumber=826; isDesktop=true; categoryName='Lawn & Garden'; init();">
+<!-- BEGIN TOOL RENTAL AVAILABILITY WIDGET -->
+
+<!-- BEGIN TOOL RENTAL AND AVAILABILITY WIDGET -->
+<div class="loading bar" ng-show="Loading">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+<div id="show-reservation" ng-hide="!ShowReservation()">
+  <div class="rental-store-search">
+    <span class="title">Rental Pricing for:</span>
+    <div class="address-search">
+        <form id="rentalSearchBoxForm-reservation" name="rentalSearchBoxForm" method="get">
+          <fieldset id="rental-search-cntr-reservation">
+            <span>
+                <input id="reservation-search-input" type="search" placeholder="City, State or Zip Code" ng-model="Address"/>
+                <button id="rentalSearchButton" value="search" type="submit" ng-click="searchByAddress()">
+                  <img style="height:10px" src="https://assets.homedepot-static.com/images/v1/caret-orange.svg"/>
+                </button>
+            </span>
+          </fieldset>
+        </form>
+      </div>
+    <div class="location-dropdown" ng-show="HasLocations()">
+      <span class="custom select" id="selectselect4">
+          <i class="icon-carrot-orange-down"></i>
+      </span>
+      <select tabindex="13" class="custom" ng-model="Location" ng-change="setSelectedLocation(Location)" ng-options="locationDropDownDisplay(location) for location in StoreLocations | orderBy:'distance':false"></select>
+    </div>
+  </div>
+  <div class="reservations-locations" ng-show="initialized && !ShowSuggestions()">
+      <div ng-repeat="location in StoreLocations" ng-if="$index == 0">
+          <div class="number ng-binding"><img src="../../images/location-1x.png"/></div>
+          <div class="address">
+              <p><span class="store-number">{[{location.name}]}</span><span class="distance">({[{location.distance.toFixed(2)}]} mi)</span></p>
+              <p><span><a class="sfhlViewonmap" href="//www.homedepot.com/StoreFinder/index.jsp?storeId={[{location.storeId}]}" target="_new">{[{location.address.street}]}, {[{location.address.city}]}, {[{location.address.state}]} {[{location.address.postalCode}]}</i></a></span></p>
+              <span style="display: flex;"><p style="font-weight: 500;">Rentals:</p>&nbsp;&nbsp;&nbsp;&nbsp;<p>{[{location.phone}]}</p></span>
+          </div>
+      </div>
+  </div>
+  <div class="tool-pricing">
+    <div>
+        <p>*Visit your nearest Home Depot Tool Rental Center for same-day holds.</p>
+    </div>
+    <table width="100%" border="0" cellpadding="0" cellspacing="4" class="tablePod td_grid_12">
+      <tr>
+        <td>
+          <div class="price">
+            <span>$</span><span class="amount" ng-show="FourHourPrice > 0">{[{FourHourPrice | number : 2}]}</span><span class="amount" ng-hide="FourHourPrice > 0">----</span>
+          </div>
+          <div class="details">
+            <p class="time">4-Hour</p>
+            <p class="min-max">(Minimum)</p>
+          </div>
+        </td>
+        <td>
+          <div class="price">
+            <span>$</span><span class="amount" ng-show="PerWeekPrice > 0">{[{PerWeekPrice | number : 2 }]}</span><span class="amount" ng-hide="PerWeekPrice > 0">----</span>
+          </div>
+          <div class="details">
+            <p class="time">Per Week</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="price">
+            <span>$</span><span class="amount" ng-show="PerDayPrice > 0">{[{PerDayPrice | number : 2}]}</span><span class="amount" ng-hide="PerDayPrice > 0">----</span>
+          </div>
+          <div class="details">
+            <p class="time">Per Day</p>
+          </div>
+        </td>
+        <td>
+          <div class="price">
+            <span>$</span><span class="amount" ng-show="PerWeekPrice > 0">{[{FourWeekPrice | number : 2}]}</span><span class="amount" ng-hide="PerWeekPrice > 0">----</span>
+          </div>
+          <div class="details">
+            <p class="time">4 Weeks</p>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p class="deposit" ng-show="initialized">This tool requires a <span class="amount" ng-show="Deposit > 0">${[{Deposit | number : 2}]}</span><span class="amount" ng-hide="Deposit > 0">----</span> deposit.
+  </div>
+
+  <div id='reserve-button'>
+      <button class='btn--primary' ng-click="goToReservationNextGen()">Reserve Now</button>
+  </div>
+</div>
+<div ng-hide="ShowReservation()">
+    <div class="tool-pricing">
+      <div class="control-group">
+        <label class="control-label" for="" ng-show="HasLocations()">Rental Pricing for:</label>
+        <label class="control-label not-localized" for="" ng-hide="HasLocations()">Find a Store for Rental Pricing and Availability:</label>
+        <div class="controls locations" ng-show="HasLocations()">
+          <span class="custom select" id="selectselect4">
+              <i class="icon-carrot-orange-down"></i>
+          </span>
+          <select tabindex="13" class="custom" ng-model="Location" ng-change="setSelectedLocation(Location)" ng-options="locationDropDownDisplay(location) for location in StoreLocations | orderBy:'distance':false"></select>
+        </div>
+      </div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="4" class="tablePod td_grid_12">
+        <tr>
+          <td>
+            <div class="price">
+              <span>$</span><span class="amount" ng-show="FourHourPrice > 0">{[{FourHourPrice | number : 2}]}</span><span class="amount" ng-hide="FourHourPrice > 0">----</span>
+            </div>
+            <div class="details">
+              <p class="time">4-Hour</p>
+              <p class="min-max">(Minimum)</p>
+            </div>
+          </td>
+          <td>
+            <div class="price">
+              <span>$</span><span class="amount" ng-show="PerWeekPrice > 0">{[{PerWeekPrice | number : 2 }]}</span><span class="amount" ng-hide="PerWeekPrice > 0">----</span>
+            </div>
+            <div class="details">
+              <p class="time">Per Week</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="price">
+              <span>$</span><span class="amount" ng-show="PerDayPrice > 0">{[{PerDayPrice | number : 2}]}</span><span class="amount" ng-hide="PerDayPrice > 0">----</span>
+            </div>
+            <div class="details">
+              <p class="time">Per Day</p>
+            </div>
+          </td>
+          <td>
+            <div class="price">
+              <span>$</span><span class="amount" ng-show="PerWeekPrice > 0">{[{FourWeekPrice | number : 2}]}</span><span class="amount" ng-hide="PerWeekPrice > 0">----</span>
+            </div>
+            <div class="details">
+              <p class="time">4 Weeks</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <p class="deposit" ng-show="initialized">This tool requires a <span class="amount" ng-show="Deposit > 0">${[{Deposit | number : 2}]}</span><span class="amount" ng-hide="Deposit > 0">----</span> deposit.
+    </div>
+    <div class="store-availability" ng-show="initialized && !ShowSuggestions() && HasLocations()">
+      <h4>Store Availability</h4>
+      <p>Visit the Tool Rental Center to complete the rental transaction.</p>
+      <p class="last-updated" ng-show="initialized && Loaded">Last updated <span class="time">{[{ LastUpdated | date: 'MMM. d, y. h:mm a' : 'EST' }]} EST</span>.</p>
+
+      <div class="control-group sort-by" ng-show="areAnyAvailable() || !Loaded">
+        <label class="control-label" for="">Sort by:</label>
+        <div class="controls">
+          <ul>
+            <li>
+              <label class="radio oneLine distance" for="distance">
+                <input type="radio" name="sort-by" id="distance" tabindex="3" ng-click="SortByDistance()">
+                <b>Distance</b>
+              </label>
+            </li>
+            <li>
+              <label class="radio oneLine availability" for="availability">
+                <input type="radio" name="sort-by" id="availability" tabindex="4" ng-click="SortByAvailability()">
+                <b>Product Availability</b>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="unavailable-error" ng-hide="areAnyAvailable() || !Loaded || StoreLocations.length == 0">
+        <i class="dwarf-help"></i><p>Tool not available for rent in the selected area. Please enter a Zip code, City or Store # below to search a different area.</p>
+      </div>
+    </div>
+    <div class="locations" ng-show="initialized && !ShowSuggestions()">
+      <ul class="cities" id="paginate">
+        <li dir-paginate="location in StoreLocations | itemsPerPage: 3 " current-page="currentPage"
+            class="{[{location.inventoryClass}]}" ng-class="{active: Location.storeId == location.storeId}">
+          <div class="number">{[{((currentPage - 1) * 3) + $index + 1}]}</div>
+          <div class="address">
+            <p><span class="store-number">{[{location.name}]} #{[{location.storeId}]} </span><span class="distance">({[{location.distance.toFixed(2)}]} mi)</span>
+              <span><a class="sfhlViewonmap" href="//www.homedepot.com/StoreFinder/index.jsp?storeId={[{location.storeId}]}" target="_new"><i class="icon-orange-up-arrow"></i></a></span>
+            </p>
+            <p>{[{location.address.street}]}</p>
+            <p>{[{location.address.city}]}, {[{location.address.state}]} {[{location.address.postalCode}]}</p>
+            <p>Phone: {[{location.phone}]}</p>
+          </div>
+          <div class="status">
+            <p class="availability" ng-show="location.inventoryClass=='in-stock'"><span ng-show="ShowInventoryCount()">{[{location.inStockCount}]} </span>In Stock for Rent</p>
+            <p class="availability" ng-show="location.inventoryClass=='out-of-stock'">Out of Stock for Rent</p>
+            <p class="message" ng-show="location.inventoryClass=='out-of-stock'">Please check back or choose a different store</p>
+            <p class="availability" ng-show="location.inventoryClass=='not-available'">Not Available for Rent</p>
+            <p class="message" ng-show="location.inventoryClass=='not-available'">Tool not available for rent at this store</p>
+          </div>
+        </li>
+      </ul>
+      <dir-pagination-controls
+          direction-links="false"
+          boundary-links="false"
+          template-url="/tool-truck-rental/js/directives/dirPagination.tpl.html"></dir-pagination-controls>
+
+    </div>
+
+    <div class="search">
+      <p>
+        <span ng-show="areAnyAvailable()">Search a Different Area</span>
+        <span ng-show="!areAnyAvailable() || !Loaded">Find a Nearby Store</span>
+      </p>
+      <form id="rentalSearchBoxForm" name="rentalSearchBoxForm" method="get">
+        <fieldset id="rental-search-cntr">
+          <input id="search" type="search" placeholder="City, State or Zip Code" ng-model="Address"/>
+          <div id="rentalSearchBtn" class="search-control-group">
+            <div class="search-controls">
+              <button id="rentalSearchButton" class="btn btn-orange btn-icon" value="search" type="submit" ng-click="searchByAddress()">
+                <i class="icon-search" ></i>
+              </button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div id="messages" ng-show="ShowMessages()">
+      <div class="did-you-mean" ng-show="ShowSuggestions()">
+        <p>Did you mean:</p>
+        <ul>
+          <li ng-repeat="suggestedLocation in SuggestedLocations"
+              ng-click="setSuggestedLocation(suggestedLocation)">{[{suggestedLocationDisplay(suggestedLocation)}]}</li>
+        </ul>
+      </div>
+      <div class="error" ng-show="ShowErrors()">
+        <p class="service-unavailable" ng-show="ServiceUnavailable()">We're sorry, the Pricing and Availability service is temporarily unavailable. Please callyour store for product pricing availability or use the Store Finder to search for other stores in your area.</p>
+        <p class="need-more-info" ng-show="ShowNeedMoreInfo()">We're sorry, we need more information. Please enter a Zip Code, City AND State, or store number to find a store.</p>
+        <p class="no-results" ng-show="ShowNoResults()">There are no stores in the nearby area with a Tool Rental Center. Please try another zipcode or city.</p>
+      </div>
+    </div>
+</div>
+<!-- END TOOL RENTAL AND AVAILABILITY WIDGET -->
+
+
+{% endblock content %}

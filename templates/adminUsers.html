@@ -1,0 +1,40 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+
+    <div class="row">
+             <div class="col-md-9" style="margin-top:20px;margin-left:40px;">
+      <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Status</th>
+              <th scope="col">City</th>
+              <th scope="col">State</th>
+              <th># of orders</th>
+            </tr>
+          </thead>
+            <tbody>
+              {% for user in users%}
+                <tr>
+                  <td>{{ user.fname}} {{ user.lname}}</td>
+                  <td>{{ user.email}}</td>
+                  <td>
+                      {% if user.isadmin %}
+                        <span class="badge badge-success">True</span>
+                      {% else %}
+                        <span class="badge badge-danger">False</span>
+                      {% endif %}
+                  </td>
+                  <td>{{ user.city}}</td>
+                  <td>{{ user.state}}</td>
+                  <td>{{ user.noOfOrders }}</td>
+
+                  <td><a href="{{ url_for('user', userid=user.userid)}}">View</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    </div>
+{% endblock content %}

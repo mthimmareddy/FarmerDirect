@@ -1,0 +1,38 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+   <div class="row">
+       <div class="col-md-9" style="margin-top:20px;margin-left:40px;">
+        <div id="display">
+            <div id="productName">
+                <h1>{{user.fname}}</h1>
+            </div>
+            <div>
+                <img src={{url_for('static', filename='uploads/'+user.image_file) }} id="productImage"/>
+            </div>
+
+            <div id="productDescription">
+                <h2>Details</h2>
+                <table id="descriptionTable">
+                    <tr>
+                        <td>Name</td>
+                        <td>{{user.fname}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>{{user.email}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary btn-sm mt-1 mb-1" href="{{ url_for('updateProfile', userid=user.userid) }}">Update</a></td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+   </div>
+{% endblock content %}

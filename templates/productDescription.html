@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+
+			<!---
+
+         <div class="col-md-12">
+             <input class="form-control" type="text" placeholder="SEARCH FOR PRODUCTS" aria-label="Search"></div>
+
+        </div><hr>-->
+
+
+        <div class="col-md-12" id="productName">
+		  <h1>{{data.product_name}}</h1>
+	     </div>
+        <div class="row">
+		  <div class="col-md-4"  style="background-color:gray;">
+
+			 <div id="myCarousel" class="carousel slide" data-ride="carousel">
+										  <!-- Indicators -->
+										  <ol class="carousel-indicators">
+											<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+											<li data-target="#myCarousel" data-slide-to="1"></li>
+											<li data-target="#myCarousel" data-slide-to="2"></li>
+										  </ol>
+
+										  <!-- Wrapper for slides -->
+										  <div class="carousel-inner" >
+											<div class="item active">
+												<a href="/productDescription?productId={{data.productid}}">
+													<img src="{{url_for('static', filename='uploads/' + data.image) }}"  alt="Los Angeles"></a>
+											</div>
+
+											<div class="item">
+												<a href="/productDescription?productId={{data.productid}}">
+													<img src="{{url_for('static', filename='uploads/' + data.image) }}"  alt="Chicago"></a>
+											</div>
+
+											<div class="item">
+												<a href="/productDescription?productId={{data.productid}}">
+													<img src="{{url_for('static', filename='uploads/' + data.image) }}"  alt="New York"></a>
+											</div>
+										  </div>
+
+										  <!-- Left and right controls -->
+
+			 </div>
+		  </div>
+
+
+    	<div class="col-md-8" id="productDescription">
+		    <h2>Details</h2>
+			<form action="#" method="POST" type="submit" onsubmit="return validate();">
+
+		   <table  class="table table-light" id="descriptionTable">
+			<tr>
+				<td scope="row">Name</td>
+				<td scope="row">{{data.description}}</td>
+			</tr>
+			 <tr>
+				<td scope="row"> Price Scale:</td>
+				<td scope="row">{{data.product_review}}</td>
+			</tr>
+
+			<tr>
+				<td scope="row">Regular Price:</td>
+				<td scope="row">Rs {{data.regular_price}}</td>
+			</tr>
+
+			<tr>
+				<td scope="row">Description</td>
+				<td scope="row"><textarea id="w3review" name="w3review" rows="4" cols="50">
+					{{data['description']}}
+  At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+					 At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+					 At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+					 At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+					 At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+
+         </textarea></td>
+			</tr>
+
+			<tr>
+
+				<td scope="row">Quantiy Needed:</td>
+				<td scope="row"><select  name="numproduct" size="1" placeholder="product" >
+						{% for row in range(1,10) %}
+					<option value="{{row}}">{{row}}</option>
+						{% endfor %}
+				</select></td>
+
+
+			</tr>
+
+		   <tr>
+			   <br><br>
+			    <td scope="row">
+					<button class="btn btn-info btn-lg" type="submit" value="Add Cart"
+							formaction="/addToCart?productId={{request.args.get('productId')}}" id="sub1">ADD CART</button></td>
+			   <td scope="row">
+					<button class="btn btn-warning btn-lg" type="submit" value="Buy Now"
+							formaction="/addToCart?productId={{request.args.get('productId')}}&buyNow=True" id="sub2">
+						BUY NOW</button>
+				</td>
+		   </tr>
+
+
+            </table></form>
+
+            </div><hr>
+
+</div>
+</div>
+
+{% endblock content %}
+

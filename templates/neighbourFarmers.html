@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+	<div class="row">
+        <div class="col-md-12">
+            <h2>{{msg1}}</h2></div>
+		<br>
+		<ul class="col-md-12">
+			{% for row in ProducerData %}
+			<li><a href="/displayProducerPage?producerid={{row.userid}}">{{row.fname}}{{" from city "}}{{row.city}}{{"  "}}{{row.category_name}}</a></li>
+			{% endfor %}
+		</ul>
+	    </div>
+    </div>
+
+
+
+
+
+
+
+
+{% endblock content %}
+

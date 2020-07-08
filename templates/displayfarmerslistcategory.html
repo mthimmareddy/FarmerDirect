@@ -1,0 +1,17 @@
+{% extends "layout1.html" %}
+{% block content %}
+
+<div class="display">
+
+	<div class="displayLocation" >
+		<h2>{{number}} Farmers listed their products in this category </h2>
+		<ul>
+			{% for row in ProducerData %}
+			<li>{{"FARMER:  "}}{{row.fname}}{{"      CITY: "}}{{row.city}}{{"userid:"}}{{row.userid}}</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{% endblock content %}
+

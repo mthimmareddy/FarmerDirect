@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Home</title>
+	<meta charset="utf-8">
+
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="data:,">
+
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href={{url_for('static', filename='css/bootstrap.min.css') }} integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/util.css') }}>
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/main.css') }}>
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/home.css') }}>
+
+	<style>
+	    .navbar-brand
+	    {color:red;}
+
+	  ul a{margin:20px 0px 0px 40px;}
+
+
+	h2{
+    background : gray;
+    text-align : center;
+	padding:10px}
+
+	.container a{
+	color:blue;
+	font-size:16pts;
+	}
+
+	body
+	{background : #D3D3D3;}
+	</style>
+
+
+</head>
+<body >
+
+
+      <nav class="navbar navbar-expand-md navbar-dark bg-info">
+          <a class="navbar-brand" href="#"><img src="static/images/FDlogo.png" width="100" alt="FarmDirect" title="Anvayaa" id="main-logo" style="margin-top:0;width:50px;height:50px;"></a>
+
+		  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" style="font-size:16pts;font-family: 'Merriweather', serif;color:white;width:65px;height:25px;">
+           Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse" >
+
+		  <ul class="navbar-nav">
+			  {% if  home %}
+			  <li class="nav-item">
+
+					<div class="input-group" id="searchBox">
+					<form class="example" action="#" method="POST" type="submit" style="width:600px" onsubmit="return validate();">
+						<select  name="category" size="1" placeholder="Category" style="width:400px; height:40px" id="categorysearch" >
+						{% for row in categoryDataall %}
+						 <option value="{{row.category_name}}{{row.categoryId}}">{{row.category_name}}</option>
+						  {% endfor %}
+						</select><button><i class="fa fa-search"></i>Search</button>
+
+					</form>
+					</div>
+			  </li>
+
+			   <li class="nav-item"><a href="/home" class="nav-link">                                 </a></li>
+			   <li class="nav-item"><a href="/home" class="nav-link">                                 </a></li>
+			  {%endif%}
+
+            {% if loggedIn and isadmin==1 %}
+			<li class="nav-item"><a href="{{url_for('admin')}}" class="nav-link"> Farmer </a></li>
+			{% elif loggedIn and isadmin==0 %}
+			<li class="nav-item"><a href="{{url_for('nurse')}}" class="nav-link"> Customer </a></li>
+			  {% elif loggedIn and isadmin==2 %}
+			<li class="nav-item"><a href="{{url_for('nurse')}}" class="nav-link"> Admin </a></li>
+
+
+			{% else %}
+			<li class="nav-item"><a href="/" class="nav-link"> Home </a></li>
+			{% endif %}
+
+			  <li class="nav-item"><a href="/rentalproducts" class="nav-link "> RENT </a></li>
+
+			   {% if not loggedIn %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  Login </a>
+					 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						 <a class="dropdown-item" href="/signInF" ><i class='fa fa-user-md' style='font-size:16px'> Farmer </i></a>
+						 <a class="dropdown-item" href="/signInC"><i class='fa fa-user' style='font-size:16px'> Customer</i></a>
+						 <a class="dropdown-item" href="/signIn"><i class='fa fa-user-secret' style='font-size:16px'> Admin </i></a>
+					 </div>
+
+				 </li>
+				{% else %}
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  Hello {{firstName}} </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					  <a class="dropdown-item" href="/logout">Sign Out </a>
+					</div>
+				 </li>
+				{% endif %}
+			     <li class="nav-item"><a href="/cart" class="nav-link">Cart {{productCountinKartForGivenUser}}</a></li>
+			     <li class="nav-item"><a href="/cart" class="nav-link">                                 </a></li>
+
+
+
+
+
+			   </ul>
+		</div>
+	  </nav>
+
+
+{% block content %}{% endblock %}
+
+
+
+
+
+	<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script type="text/javascript" src={{url_for('static', filename='js/shop-hours.js')}}></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

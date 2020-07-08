@@ -1,0 +1,211 @@
+{% extends "admin_layout.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-9" style="margin-top:20px;margin-left:10px;">
+
+
+
+             <form class="form-horizontal" action="/booking" method="POST" type="submit" onsubmit="return validate();">
+                <div class="col-sm-offset-2" style="margin-bottom: 20px">
+                    <h1>Create your Booking</h1>
+                </div>
+                 <input type='hidden' name='csrfmiddlewaretoken' value='fMB8f8diP5pLcajfbMx68YnKWkMS2bmgDdQK2XVR5okG7MjRGVdD4zVZHgDHRIM2' />
+
+
+                 <div class="form-group">
+                        <div>
+                            <label for="id_catsel" class="col-sm-3 control-label">Choose Category:</label>
+                                <div class="col-sm-5">
+                                    <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" required id="id_catSel">
+                                       {% for row in categoryData %}
+						             <option value="{{row.categoryid}}" placeholder="select Loc">{{row.category_name}}</option>
+                                    {% endfor %}
+                                    </select>
+
+                                </div>
+                            </div>
+                    </div>
+
+                 <div class="form-group">
+                        <div>
+                            <label for="id_prosel" class="col-sm-3 control-label">Choose Product:</label>
+                                <div class="col-sm-5">
+                                    <select id="proSel" name="proSel" size="1"  class="form-control" maxlength="75" required id="id_prosel">
+                                       {% for row in productdata %}
+						             <option value="{{row.productid}}" placeholder="select Loc">{{row.product_name}}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
+
+
+
+                 <div class="form-group">
+
+                            <div>
+                                <label for="id_startdate" class="col-sm-3 control-label">Rental Start Date:</label>
+                                <div class="col-sm-5">
+                                    <input type="date" name="orderstartdate" class="form-control" maxlength="100" required id="id_startdate" />
+                                </div>
+                            </div>
+
+
+                    </div>
+
+                  <div class="form-group">
+
+                            <div>
+                                <label for="id_enddate" class="col-sm-3 control-label">Rental End Date:</label>
+                                <div class="col-sm-5">
+                                    <input type="date" name="orderenddate" class="form-control" maxlength="100" required id="id_enddate" />
+                                </div>
+                            </div>
+
+
+                    </div>
+
+
+                <div class="form-group">
+
+                            <div>
+                                <label for="id_firstname" class="col-sm-3 control-label">FirstName:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="firstName" class="form-control" maxlength="100" required id="id_firstname" />
+                                </div>
+                            </div>
+
+
+                    </div>
+                <div class="form-group">
+
+                            <div>
+                                <label for="id_lastName" class="col-sm-3 control-label">LastName:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="lastName" class="form-control" maxlength="100" required id="id_lastName" />
+                                </div>
+                            </div>
+
+
+                    </div>
+                  <div class="form-group">
+
+                            <div>
+                                <label for="id_email" class="col-sm-3 control-label">Email:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="email" class="form-control" maxlength="100" required id="id_email" />
+                                </div>
+                            </div>
+
+
+                    </div>
+
+                <div class="form-group">
+
+                            <div>
+                                <label for="id_address1" class="col-sm-3 control-label">Address Line 1:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="address1" class="form-control" maxlength="100" required id="id_address1" />
+                                </div>
+                            </div>
+                </div>
+
+                 <div class="form-group">
+
+                            <div>
+                                <label for="id_phone" class="col-sm-3 control-label">Phone:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" name="phone" class="form-control" maxlength="100" required id="id_phone" />
+                                </div>
+                            </div>
+
+
+                    </div>
+
+                 <div class="form-group">
+                        <div>
+                            <label for="id_email" class="col-sm-3 control-label">Select country:</label>
+                                <div class="col-sm-5">
+                                    <select id="countySel" name="country" size="1"  class="form-control" maxlength="75" required id="id_countySel">
+                                       <option value="" selected="selected">-- Select Country --</option>
+                                  </select>
+
+                                </div>
+                            </div>
+                    </div>
+
+                 <div class="form-group">
+                        <div>
+                            <label for="id_email" class="col-sm-3 control-label">Select State:</label>
+                                <div class="col-sm-5">
+                                    <select id="stateSel" name="state" size="1"  class="form-control" maxlength="75" required id="id_stateSel">
+                                       <option value="" selected="selected">-- Select State --</option>
+                                  </select>
+
+                                </div>
+                            </div>
+                    </div>
+
+                  <div class="form-group">
+                        <div>
+                            <label for="id_email" class="col-sm-3 control-label">Select City:</label>
+                                <div class="col-sm-5">
+                                    <select id="citySel" name="city" size="1"  class="form-control" maxlength="75" required id="id_citySel">
+                                       <option value="" selected="selected">-- Select City --</option>
+                                  </select>
+
+                                </div>
+                            </div>
+                    </div>
+
+                <div class="form-group">
+                        <div>
+                            <label for="id_email" class="col-sm-3 control-label">Select ZipCode:</label>
+                                <div class="col-sm-5">
+                                    <select id="zipSel" name="zipcode" size="1"  class="form-control" maxlength="75" required id="id_zipSel">
+                                       <option value="" selected="selected">-- Select ZipCode --</option>
+                                  </select>
+
+                                </div>
+                            </div>
+                    </div>
+
+
+
+
+                <div class="form-group">
+
+                            <div class="col-sm-offset-3 col-sm-5">
+                                <div class="checkbox">
+                                    <label id="id_tos_label">
+                                      <input type="checkbox" name="tos" required id="id_tos" /> I agree to the <a href="/terms/">Terms and Conditions</a>
+                                      and the <a href="/privacy/">Privacy and Cookies Policy</a>,
+                                      and confirm that I am at least 13 years old.
+                                    </label>
+                                </div>
+                            </div>
+
+
+                    </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-5">
+
+                            <button id="id_register_button" type="submit" class="btn btn-primary">BOOK NOW</button>
+
+
+                        <div id="id_we_dont_spam">
+                            We promise not to spam or pass your details on to anyone else.
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div><br/><br/>
+
+
+
+
+{% endblock content %}
