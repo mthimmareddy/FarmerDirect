@@ -455,7 +455,7 @@ def displayCategory(category_name=None):
             .all()
     else:
         productDetailsByCategoryId = Product.query.join(ProductCategory, Product.productid == ProductCategory.productid) \
-             .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.price_scale,
+             .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.product_review,
                           Product.image,Product.quantity) \
              .join(Category, Category.categoryid == ProductCategory.categoryid) \
              .filter(Category.categoryid == int(categoryId)) \
@@ -478,7 +478,7 @@ def displayProductsByLocation():
      loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
      producerid = request.args.get("producerid")
      productDetailsByLocation = Product.query.join(ProducerProduct, Product.productid == ProducerProduct.productid) \
-         .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.price_scale,
+         .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.product_review,
                       Product.image) \
          .join(User, User.city == ProducerProduct.productcity).all()
 
@@ -542,7 +542,7 @@ def displayProductsByProducer():
      productDetailsByuserId = RentalProducerProduct.query.with_entities(RentalProducerProduct.productid).filter(
          RentalProducerProduct.producerid == producerid) \
          .join(RentalProduct).add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,
-                                          RentalProduct.image,RentalProduct.price_scale,RentalProduct.quantity) \
+                                          RentalProduct.image,RentalProduct.product_review,RentalProduct.quantity) \
          .filter(RentalProducerProduct.productid == RentalProduct.productid).join(RentalProductCategory).add_columns(
          RentalProductCategory.categoryid) \
          .filter(RentalProductCategory.categoryid == rentalcategoryid).all()
@@ -551,7 +551,7 @@ def displayProductsByProducer():
 
      productDetailsByuserId = ProducerProduct.query.with_entities(ProducerProduct.productid).filter(ProducerProduct.producerid == producerid)\
          .join(Product).add_columns(Product.productid, Product.product_name, Product.regular_price,
-                                    Product.price_scale,Product.image,Product.quantity)\
+                                    Product.product_review,Product.image,Product.quantity)\
          .filter(ProducerProduct.productid==Product.productid).join(ProductCategory).add_columns(ProductCategory.categoryid)\
          .filter(ProductCategory.categoryid == categoryid).all()
      print(productDetailsByuserId,len(productDetailsByuserId))
@@ -792,7 +792,7 @@ def getProducts():
                      .join(Product, Product.productid == ProducerProduct.productid) \
                      .add_columns(Product.productid, Product.product_name, Product.description, Product.image, Product.quantity,
                                   Product.regular_price,
-                                  Product.price_scale).all()
+                                  Product.product_review).all()
          return render_template('adminProducts.html', products=products, firstName=firstName, loggedIn=loggedIn,
                                 isadmin=isadmin,
                                 userid=userid, productCountinKartForGivenUser=productCountinKartForGivenUser)
@@ -918,7 +918,7 @@ def update_product(product_id):
      product.quantity = form.productQuantity.data
      product.product_review = mydict[form.priceingScale.data]
 
-     # product.price_scale = form.data.price_scale = 15
+     # Product.product_review = form.data.price_scale = 15
      product.regular_price = form.productPrice.data
      db.session.commit()
      product_category = ProductCategory.query.filter_by(productid=product.productid).first()
