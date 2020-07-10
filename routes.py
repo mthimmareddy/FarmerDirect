@@ -22,7 +22,7 @@ from flask import url_for, flash, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, RadioField, FloatField, SelectField
 from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import DataRequired, Length, Email
+from wtforms.validators import dataRequired, Length, Email
 
 loggedIn=False
 firstName="guest"
@@ -47,7 +47,7 @@ current_date = current_date[0]
 
 #session_data={}
 def login_details():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     isadmin=isUserAdmin()
     return isadmin,loggedIn, firstName, productCountinKartForGivenUser, userid
 
@@ -81,14 +81,14 @@ def listfarmers():
     loc=request.args.get('terms')
     ##logging.warning('location',loc)
 
-    itemData = User.query.filter(User.city==loc).join(ProducerProduct, User.userid ==ProducerProduct.producerid) \
+    itemdata = User.query.filter(User.city==loc).join(ProducerProduct, User.userid ==ProducerProduct.producerid) \
         .add_columns(User.fname, User.userid, User.city,User.image_file)\
         .join(ProductCategory,ProductCategory.productid == ProducerProduct.productid) \
         .add_columns(ProductCategory.categoryid).join(Category,Category.categoryid==ProductCategory.categoryid)\
         .add_columns(Category.category_name, Category.categoryid).all()
 
 
-    return render_template("sellProducts.html", ProducerData=itemData)
+    return render_template("sellProducts.html", Producerdata=itemdata)
 
 @app.route('/account')
 def show_account():
@@ -129,11 +129,11 @@ def blog():
     #page = request.args.get('page', 1, type=int)
     posts = Post.query.all()
     #posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('FDblog.html',posts=posts,blog=True)
+    return render_template('Fdblog.html',posts=posts,blog=True)
 
 @app.route("/post/new", methods=['GET', 'POST'])
 def new_post():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=userid)
@@ -147,7 +147,7 @@ def new_post():
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     post = Post.query.get_or_404(post_id)
     #logging.warning(post)
     return render_template('post.html', title=post.title, post=post,userid=userid,firstName=firstName)
@@ -156,7 +156,7 @@ def post(post_id):
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 
 def update_post(post_id):
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     post = Post.query.get_or_404(post_id)
 
     if post.author != userid:
@@ -177,7 +177,7 @@ def update_post(post_id):
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 def delete_post(post_id):
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     post = Post.query.get_or_404(post_id)
     if post.author != userid:
         abort(403)
@@ -191,14 +191,14 @@ def delete_post(post_id):
 @app.route("/sellProducts",methods=['POST','GET'])
 def sellProducts():
        city_name=None
-       loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+       loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
        ##logging.warning(loggedIn,firstName,productCountinKartForGivenUser)
-       productsDataall = Product.query.all()
-       locationDataall = User.query.with_entities(User.city).filter(User.isadmin == 1).all()
-       locationDataall = list(set(locationDataall))
-       allProductDetails = getAllProducts()
-       allProductsMassagedDetails = massageItemData(allProductDetails)
-       categoryData= getCategoryDetails()
+       productsdataall = Product.query.all()
+       locationdataall = User.query.with_entities(User.city).filter(User.isadmin == 1).all()
+       locationdataall = list(set(locationdataall))
+       allProductdetails = getAllProducts()
+       allProductsMassageddetails = massageItemdata(allProductdetails)
+       categorydata= getCategorydetails()
 
        data1 = ProducerProduct.query.join(ProductCategory, ProducerProduct.productid == ProductCategory.productid) \
            .join(User, User.userid == ProducerProduct.producerid) \
@@ -220,26 +220,26 @@ def sellProducts():
        for item in data:
            print('final',item)
 
-       #Producercategory,data= getProducerDetails()
-       #Producerrentcategory, data2 = getProducerDetails(rent=True)
+       #Producercategory,data= getProducerdetails()
+       #Producerrentcategory, data2 = getProducerdetails(rent=True)
        #print(Producerrentcategory,data2)
 
-       categoryDataall = Category.query.all()
+       categorydataall = Category.query.all()
        msg = "SHOWING THE FARMERS LISTING ALL CATEGORIES"
 
        city_name = request.args.get('city_name')
        #print('city type',type(city_name))
-       msg_city="SHOWING THE ALL PRODUCTS FROM ALL LOCATIONS"
+       msg_city="SHOWING THE ALL PROdUCTS FROM ALL LOCATIONS"
 
        if city_name:
-           ProducerproductData = User.query.filter(User.city == city_name).join(ProducerProduct,
+           Producerproductdata = User.query.filter(User.city == city_name).join(ProducerProduct,
                                                                    User.userid == ProducerProduct.producerid) \
                .add_columns(User.image_file,User.fname,User.phone,User.userid,User.address1,User.address2,User.city,User.zipcode,User.email) \
                .join(ProductCategory, ProductCategory.productid == ProducerProduct.productid) \
                .add_columns(ProductCategory.categoryid).join(Category,Category.categoryid == ProductCategory.categoryid) \
                .add_columns(Category.category_name, Category.categoryid).all()
 
-           ProducerrentData = User.query.filter(User.city == city_name).join(RentalProducerProduct,
+           Producerrentdata = User.query.filter(User.city == city_name).join(RentalProducerProduct,
                                                                          User.userid == RentalProducerProduct.producerid) \
                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2,
                             User.city, User.zipcode, User.email) \
@@ -249,12 +249,12 @@ def sellProducts():
                .add_columns(RentalCategory.category_name, RentalCategory.categoryid).all()
 
 
-           #print('ProducerData',ProducerData)
-           data = modifyProducerdata(ProducerproductData,ProducerrentData)
+           #print('Producerdata',Producerdata)
+           data = modifyProducerdata(Producerproductdata,Producerrentdata)
            print('len of data',len(data))
-           msg_city = "SHOWING THE ALL PRODUCTS FROM {0}".format(city_name)
+           msg_city = "SHOWING THE ALL PROdUCTS FROM {0}".format(city_name)
 
-           productsDataall = User.query.filter(User.city == city_name).join(ProducerProduct,
+           productsdataall = User.query.filter(User.city == city_name).join(ProducerProduct,
                                                                             User.userid == ProducerProduct.producerid) \
                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.city, User.email,
                             ProducerProduct.productid) \
@@ -268,16 +268,16 @@ def sellProducts():
 
        if request.method == 'POST':
            category_name = request.form.get("category")
-           ProducerData, productsdata, num = getProducerCategory(category_name)
-           data = modifyProducerdata(ProducerData,data2)
+           Producerdata, productsdata, num = getProducerCategory(category_name)
+           data = modifyProducerdata(Producerdata,data2)
            msg = "SHOWING THE FARMERS LISTING CATEGORY:{}".format(category_name).upper()
 
 
 
-       return render_template('sellProducts.html', productpage=True,itemData=allProductsMassagedDetails, loggedIn=loggedIn, firstName=firstName,
-                              productCountinKartForGivenUser=productCountinKartForGivenUser,ProducerData=data,
-                              categoryData=categoryData, categoryDataall=categoryDataall,
-                              locationDataall=locationDataall, productsDataall=productsDataall,msg=msg,msg_city=msg_city)
+       return render_template('sellProducts.html', productpage=True,itemdata=allProductsMassageddetails, loggedIn=loggedIn, firstName=firstName,
+                              productCountinKartForGivenUser=productCountinKartForGivenUser,Producerdata=data,
+                              categorydata=categorydata, categorydataall=categorydataall,
+                              locationdataall=locationdataall, productsdataall=productsdataall,msg=msg,msg_city=msg_city)
 
 
 @app.route("/productAlertNotification" , methods=['GET','POST'])
@@ -298,7 +298,7 @@ def productAlertNotification():
 
 @app.route("/neighbourFarmers",methods=['POST','GET'])
 def neighbourFarmers():
-    return render_template("neighbourFarmers.html",ProducerData = getProducerDetails())
+    return render_template("neighbourFarmers.html",Producerdata = getProducerdetails())
 
 
 
@@ -372,10 +372,10 @@ def login():
 
         if is_valid(email, password):
                 session['email'] = email
-                loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+                loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
                 session['email'] = email
                 session.modified = True
-                #logging.warning('INSIDE LOGIN:{0}'.format(session,session['email']))
+                #logging.warning('INSIdE LOGIN:{0}'.format(session,session['email']))
 
                 #session_data['firstName']=firstName
 
@@ -416,7 +416,7 @@ def register():
     isadmin = request.args.get("isadmin")
     if request.method == 'POST':
         # Parse form data
-        msg = extractAndPersistUserDataFromForm(request,isadmin)
+        msg = extractAndPersistUserdataFromForm(request,isadmin)
         return render_template("login.html", error=msg)
 
 
@@ -425,7 +425,7 @@ def register():
 def root():
 
 
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     #logger.info(loggedIn,firstName)
     #updateProductStockStatus()
 
@@ -442,9 +442,9 @@ def displayCategory(category_name=None):
              Category.category_name == category_name).first()
         categoryId=categoryId[0]
         ##logging.warning('categoryId',categoryId)
-    loggedIn, firstName, noOfItems, userid = getLoginUserDetails()
+    loggedIn, firstName, noOfItems, userid = getLoginUserdetails()
     if producerId:
-        productDetailsByCategoryId = Product.query.join(ProducerProduct)\
+        productdetailsByCategoryId = Product.query.join(ProducerProduct)\
             .filter(ProducerProduct.producerid == producerId) \
             .join(ProductCategory, Product.productid == ProductCategory.productid) \
             .add_columns(Product.productid, Product.product_name, Product.regular_price,
@@ -454,17 +454,17 @@ def displayCategory(category_name=None):
             .add_columns(Category.category_name) \
             .all()
     else:
-        productDetailsByCategoryId = Product.query.join(ProductCategory, Product.productid == ProductCategory.productid) \
+        productdetailsByCategoryId = Product.query.join(ProductCategory, Product.productid == ProductCategory.productid) \
              .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.product_review,
                           Product.image,Product.quantity) \
              .join(Category, Category.categoryid == ProductCategory.categoryid) \
              .filter(Category.categoryid == int(categoryId)) \
              .add_columns(Category.category_name) \
              .all()
-    if len(productDetailsByCategoryId)!= 0:
-         categoryName = productDetailsByCategoryId[0].category_name
-         data = productDetailsByCategoryId
-         for item in productDetailsByCategoryId:
+    if len(productdetailsByCategoryId)!= 0:
+         categoryName = productdetailsByCategoryId[0].category_name
+         data = productdetailsByCategoryId
+         for item in productdetailsByCategoryId:
              print('Inside category',item)
          return render_template('displayCategory.html', data=data, loggedIn=loggedIn, firstName=firstName,
                                 noOfItems=noOfItems)
@@ -475,19 +475,19 @@ def displayCategory(category_name=None):
 '''
 @app.route("/displayProductsByLocation")
 def displayProductsByLocation():
-     loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
+     loggedIn, firstName, noOfItems,userid = getLoginUserdetails()
      producerid = request.args.get("producerid")
-     productDetailsByLocation = Product.query.join(ProducerProduct, Product.productid == ProducerProduct.productid) \
+     productdetailsByLocation = Product.query.join(ProducerProduct, Product.productid == ProducerProduct.productid) \
          .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.product_review,
                       Product.image) \
          .join(User, User.city == ProducerProduct.productcity).all()
 
-     ##logging.warning('productDetailsByuserId',type(productDetailsByLocation))
+     ##logging.warning('productdetailsByuserId',type(productdetailsByLocation))
 '''
 
 @app.route("/displayProducerPage")
 def displayProducerPage():
- loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
+ loggedIn, firstName, noOfItems,userid = getLoginUserdetails()
  ##logging.warning(userid)
  #farmdescription = User.query.with_entities(User.farmdescription).filter(User.userid==producerid)
  try:
@@ -505,7 +505,7 @@ def displayProducerPage():
  ##logging.warning('farmdescription',Producername,farmdescription)
  rentalproducts= RentalProduct.query.all()
 
- RentalCategoryData = RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
+ RentalCategorydata = RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
      .add_columns(RentalCategory.category_name, RentalCategory.categoryid, RentalCategory.category_image) \
      .join(RentalProducerProduct, RentalProductCategory.productid == RentalProducerProduct.productid).filter(
      RentalProducerProduct.producerid == producerid) \
@@ -514,21 +514,21 @@ def displayProducerPage():
      .all()
 
 
- CategoryData = Category.query.join(ProductCategory, Category.categoryid == ProductCategory.categoryid) \
+ Categorydata = Category.query.join(ProductCategory, Category.categoryid == ProductCategory.categoryid) \
      .add_columns(Category.category_name,Category.categoryid,Category.category_image)\
      .join(ProducerProduct, ProductCategory.productid == ProducerProduct.productid).filter(ProducerProduct.producerid == producerid) \
      .add_columns(ProducerProduct.producerid).order_by(Category.categoryid.desc()) \
      .distinct(Category.categoryid) \
      .all()
 
- return render_template('displayProducerPage.html', RentalCategoryData=RentalCategoryData,rentalproducts=rentalproducts,CategoryData=CategoryData, loggedIn=loggedIn, firstName=firstName,
+ return render_template('displayProducerPage.html', RentalCategorydata=RentalCategorydata,rentalproducts=rentalproducts,Categorydata=Categorydata, loggedIn=loggedIn, firstName=firstName,
                         producerid=producerid,noOfItems=noOfItems,farmdescription=farmdescription,Producername=Producername.upper(),profile=profile_img)
 
 
 
 @app.route("/displayProductsByProducer")
 def displayProductsByProducer():
- loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
+ loggedIn, firstName, noOfItems,userid = getLoginUserdetails()
  producerid = request.args.get("producerid")
  categoryid = request.args.get("categoryid")
  rent=False
@@ -539,7 +539,7 @@ def displayProductsByProducer():
 
  if rentalcategoryid:
      rent=True
-     productDetailsByuserId = RentalProducerProduct.query.with_entities(RentalProducerProduct.productid).filter(
+     productdetailsByuserId = RentalProducerProduct.query.with_entities(RentalProducerProduct.productid).filter(
          RentalProducerProduct.producerid == producerid) \
          .join(RentalProduct).add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,
                                           RentalProduct.image,RentalProduct.product_review,RentalProduct.quantity) \
@@ -549,16 +549,16 @@ def displayProductsByProducer():
  if categoryid:
      print('inside categoryid',categoryid)
 
-     productDetailsByuserId = ProducerProduct.query.with_entities(ProducerProduct.productid).filter(ProducerProduct.producerid == producerid)\
+     productdetailsByuserId = ProducerProduct.query.with_entities(ProducerProduct.productid).filter(ProducerProduct.producerid == producerid)\
          .join(Product).add_columns(Product.productid, Product.product_name, Product.regular_price,
                                     Product.product_review,Product.image,Product.quantity)\
          .filter(ProducerProduct.productid==Product.productid).join(ProductCategory).add_columns(ProductCategory.categoryid)\
          .filter(ProductCategory.categoryid == categoryid).all()
-     print(productDetailsByuserId,len(productDetailsByuserId))
+     print(productdetailsByuserId,len(productdetailsByuserId))
 
 
 
- data = productDetailsByuserId
+ data = productdetailsByuserId
  print(loggedIn,firstName,noOfItems,rent)
 
  return render_template('displayProducerproducts.html', data=data, loggedIn=loggedIn, firstName=firstName,
@@ -567,12 +567,12 @@ def displayProductsByProducer():
 
 
 
-@app.route("/productDescription")
-def productDescription():
- loggedIn, firstName, noOfItems,userid= getLoginUserDetails()
+@app.route("/productdescription")
+def productdescription():
+ loggedIn, firstName, noOfItems,userid= getLoginUserdetails()
  productid = request.args.get('productId')
- productDetailsByProductId = getProductDetails(productid)
- return render_template("productDescription.html", data=productDetailsByProductId, loggedIn=loggedIn,
+ productdetailsByProductId = getProductdetails(productid)
+ return render_template("productdescription.html", data=productdetailsByProductId, loggedIn=loggedIn,
                         firstName=firstName,userid=userid,
                         productCountinKartForGivenUser=noOfItems)
 
@@ -592,14 +592,14 @@ def addToCart():
      if request.method=='POST':
          num_days =  request.form.get('num_days')
          ##logging.warning('inside Number of days',num_days)
-         extractAndPersistKartDetailsUsingSubquery(productId, num_products, rent=True, num_days=num_days)
+         extractAndPersistKartdetailsUsingSubquery(productId, num_products, rent=True, num_days=num_days)
  else:
      if request.method == 'POST':
          #logging.warning('inside sell products')
          num_products=request.form.get("numproduct")
          #Quantity=request.form.get("price")
          #logging.warning('Number of products',num_products)
-         extractAndPersistKartDetailsUsingSubquery(productId, num_products)
+         extractAndPersistKartdetailsUsingSubquery(productId, num_products)
          if buyNow:
              flash('Item successfully added to cart !!', 'success')
              return redirect(url_for('checkoutForm'))
@@ -612,7 +612,7 @@ def addToCart():
 @app.route("/cart")
 def cart():
 
- loggedIn, firstName, productCountinKartForGivenUser,userid = getLoginUserDetails()
+ loggedIn, firstName, productCountinKartForGivenUser,userid = getLoginUserdetails()
  cartdetails1, totalsum1,tax1, cartdetails2, totalsum2,tax2  = getusercartdetails()
  #locdata = User.query.all()
  data={}
@@ -625,7 +625,7 @@ def cart():
  grand_total=totalsum1+totalsum2
 
  #logging.warning('grand_total',grand_total)
- return render_template("cart.html", locdata=locdata,cartData1=cartdetails1, cartData2=cartdetails2,productCountinKartForGivenUser=productCountinKartForGivenUser, loggedIn=loggedIn,
+ return render_template("cart.html", locdata=locdata,cartdata1=cartdetails1, cartdata2=cartdetails2,productCountinKartForGivenUser=productCountinKartForGivenUser, loggedIn=loggedIn,
                         firstName=firstName, totalsum1=totalsum1,totalsum2=totalsum2, tax1=tax1,tax2=tax2, grand_total=grand_total,userid=userid)
 
 def save_picture(form_picture,email=None):
@@ -749,7 +749,7 @@ def admin():
  global firstName
  global isadmin
  global admin
- loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserdetails()
  #logging.warning('inside admin,Userid{0},isadmin{1}'.format(userid,isadmin))
  isadmin = User.query.with_entities(User.isadmin).filter( User.userid == userId).first()
  #logging.warning('isadmin value',isadmin[0])
@@ -764,7 +764,7 @@ def admin():
 
 @app.route("/farmer", methods=['GET'])
 def farmer():
- loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserdetails()
  return render_template('Farmer.html', firstName=firstName, loggedIn=loggedIn, isadmin=isadmin, userid=userid,
                         productCountinKartForGivenUser=productCountinKartForGivenUser)
 
@@ -775,7 +775,7 @@ def farmer():
 def getProducts():
  products=Product.query.all()
  #global userid
- loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
  #logging.warning('userid',userid)
  if isUserAdmin() == 2:
      products = Product.query.all()
@@ -828,7 +828,7 @@ def addProduct():
          if form.image.data:
              product_icon = save_picture(form.image.data)
          selectedscale = mydict[form.priceingScale.data]
-         product = Product(sku=form.sku.data, product_name=form.productName.data, description=form.productDescription.data, image=product_icon, quantity=form.productQuantity.data, price_scale=15, product_rating=0, product_review=selectedscale, regular_price=form.productPrice.data)
+         product = Product(sku=form.sku.data, product_name=form.productName.data, description=form.productdescription.data, image=product_icon, quantity=form.productQuantity.data,product_rating=0, product_review=selectedscale, regular_price=form.productPrice.data)
 
          db.session.add(product)
          db.session.commit()
@@ -914,11 +914,11 @@ def update_product(product_id):
          product.image = save_picture(form.image.data)
      product.product_name = form.productName.data
      product.sku = form.sku.data
-     product.productDescription = form.productDescription.data
+     product.productdescription = form.productdescription.data
      product.quantity = form.productQuantity.data
      product.product_review = mydict[form.priceingScale.data]
 
-     # Product.product_review = form.data.price_scale = 15
+     # Product.product_review = form.data.product_review = 15
      product.regular_price = form.productPrice.data
      db.session.commit()
      product_category = ProductCategory.query.filter_by(productid=product.productid).first()
@@ -984,7 +984,7 @@ def checkoutForm():
  #logging.warning('cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2',totalsum1, tax1,  totalsum2, tax2)
  grand_total= float(totalsum1+float(tax1)+totalsum2+float(tax2))
 
- return render_template("checkoutPage.html", cartData=cartdetails1, grand_total=grand_total, tax=tax1)
+ return render_template("checkoutPage.html", cartdata=cartdetails1, grand_total=grand_total, tax=tax1)
 
 
 
@@ -1026,7 +1026,7 @@ def booking():
     ##logging.warning('Rental productid',rentalproductid)
 
 
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
 
     if request.method=='POST'and loggedIn:
         rentalorder_date = request.form['orderstartdate']
@@ -1056,7 +1056,7 @@ def booking():
         ##logging.warning('rentalproduct',rentalproduct)
         #productid= RentalProduct.query.with_entities(RentalProduct.productid).filter(RentalProduct.product_name==rentalproduct).first()
 
-        ##logging.warning('Days',rentalorder_date,rentalreturn_date)
+        ##logging.warning('days',rentalorder_date,rentalreturn_date)
 
 
     rentstart_days = convertdates(rentalorder_date, current_date)
@@ -1069,7 +1069,7 @@ def booking():
         #logging.warning('Order is not confirmed')
 
 
-    extractAndPersistKartDetailsUsingSubquery(productId=rentalproductid, rent=True, num_days=days)
+    extractAndPersistKartdetailsUsingSubquery(productId=rentalproductid, rent=True, num_days=days)
 
     cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2 = getusercartdetails()
 
@@ -1077,7 +1077,7 @@ def booking():
     userid= User.query.with_entities(User.userid).filter(User.email==email).all()
     #logging.warning('userid:',userid)
     if not userid:
-        ##logging.warning('User doesnot exist in Database,so adding user')
+        ##logging.warning('User doesnot exist in database,so adding user')
         user = User(fname=firstName, lname='guest', password=hashlib.md5("guest".encode()).hexdigest(),
                     address1=address1,address2='',city=city, state=state, country=country, zipcode=zipcode, email=email,
                     phone=phone, isadmin=isadmin)
@@ -1111,19 +1111,19 @@ def check_available():
 
 class addRentalCategoryForm(FlaskForm):
  category_image = FileField('Product Image', validators=[FileAllowed(['jpg', 'png'])])
- category_name = StringField('Category Name', validators=[DataRequired()])
+ category_name = StringField('Category Name', validators=[dataRequired()])
  submit = SubmitField('Save')
 
 
 
 class addRentalProductForm(FlaskForm):
  category = SelectField('Rental Category:', coerce=int, id='select_category')
- productName = StringField('RentalProduct Name:', validators=[DataRequired()])
- productDescription = TextAreaField('RentalProduct Description:', validators=[DataRequired()])
+ productName = StringField('RentalProduct Name:', validators=[dataRequired()])
+ productdescription = TextAreaField('RentalProduct description:', validators=[dataRequired()])
  price_scale= SelectField('RentalPrice_scale:', coerce=int, id='select_scale')
- productPrice = FloatField('RentalProduct Price:', validators=[DataRequired()])
- productQuantity = IntegerField('RentalProduct Quantity:', validators=[DataRequired()])
- city = StringField('City:', validators=[DataRequired()])
+ productPrice = FloatField('RentalProduct Price:', validators=[dataRequired()])
+ productQuantity = IntegerField('RentalProduct Quantity:', validators=[dataRequired()])
+ city = StringField('City:', validators=[dataRequired()])
  image = FileField('RentalProduct Image', validators=[FileAllowed(['jpg', 'png'])])
  submit = SubmitField('Save')
 
@@ -1186,7 +1186,7 @@ def addRentalCategory():
 ####################Rental product updation/modification##############################################################33
 @app.route("/rentalproducts",methods=['POST','GET'])
 def rentalproducts():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     productid=99999
     list1 = []
     rent_status=0
@@ -1209,16 +1209,16 @@ def rentalproducts():
 
 
     msg1 = "SHOWING THE FARMERS LISTING ALL LOCATION"
-    msg2 = "LISTING RENTAL PRODUCTS ALL LOCATIONS"
+    msg2 = "LISTING RENTAL PROdUCTS ALL LOCATIONS"
 
     ##logging.warning(loggedIn, firstName, productCountinKartForGivenUser)
     locdata = User.query.all()
     catdata=RentalCategory.query.all()
 
-    RentalproductsDataall = RentalProduct.query.all()
-    ProducerData = getRentOwnersDetails()
-    locationDataall = User.query.with_entities(User.city).filter(User.isadmin == 1).all()
-    categoryDataall =  RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
+    Rentalproductsdataall = RentalProduct.query.all()
+    Producerdata = getRentOwnersdetails()
+    locationdataall = User.query.with_entities(User.city).filter(User.isadmin == 1).all()
+    categorydataall =  RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
         .join(RentalProduct, RentalProduct.productid == RentalProductCategory.productid) \
         .order_by(RentalCategory.categoryid.desc()) \
         .distinct(RentalCategory.categoryid) \
@@ -1227,7 +1227,7 @@ def rentalproducts():
     # #logging.warning(city_name)
 
     if city_name:
-        ProducerData = User.query.filter(User.city == city_name).join(RentalProducerProduct,User.userid == RentalProducerProduct.producerid) \
+        Producerdata = User.query.filter(User.city == city_name).join(RentalProducerProduct,User.userid == RentalProducerProduct.producerid) \
             .add_columns(User.fname, User.userid, User.city) \
             .join(RentalProductCategory, RentalProductCategory.productid == RentalProducerProduct.productid) \
             .add_columns(RentalProductCategory.categoryid).join(RentalCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
@@ -1242,10 +1242,10 @@ def rentalproducts():
         ##logging.warning('categoryId',categoryId,category_name)
 
         msg1 = "FARMERS LISTING OF CATEGORY:{}".format(category_name.upper())
-        msg2 = "RENTAL PRODUCTS OF CATEGORY {}".format(category_name.upper())
-        ProducerData= getRentOwnersDetails(loc=city_name,cat=categoryId)
+        msg2 = "RENTAL PROdUCTS OF CATEGORY {}".format(category_name.upper())
+        Producerdata= getRentOwnersdetails(loc=city_name,cat=categoryId)
 
-        RentalproductsDataall = RentalProduct.query.join(RentalProducerProduct, RentalProduct.productid == RentalProducerProduct.productid) \
+        Rentalproductsdataall = RentalProduct.query.join(RentalProducerProduct, RentalProduct.productid == RentalProducerProduct.productid) \
         .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,
                      RentalProduct.image,RentalProducerProduct.producerid) \
             .join(RentalProductCategory, RentalProductCategory.productid == RentalProduct.productid) \
@@ -1256,15 +1256,15 @@ def rentalproducts():
             .filter(User.city == city_name).add_columns(User.city).all()
         check=True
         '''
-    RentalproductsDataall = RentalProduct.query.join(RentalProductCategory,
+    Rentalproductsdataall = RentalProduct.query.join(RentalProductCategory,
                                                          RentalProduct.productid == RentalProductCategory.productid) \
         .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,
                      RentalProduct.image) \
         .join(RentalCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
         .add_columns(RentalCategory.category_name).order_by(RentalCategory.categoryid.desc()) \
         .all()
-    #logging.warning('Rental products',len(RentalproductsDataall))
-    for item in RentalproductsDataall:
+    #logging.warning('Rental products',len(Rentalproductsdataall))
+    for item in Rentalproductsdataall:
             productid = item.productid
             p = RentalOrder.query.filter_by(rentalproductid=productid).first()
             ##logging.warning('productid', p)
@@ -1278,24 +1278,24 @@ def rentalproducts():
             list1.append(data)
 
 
-    return render_template('rentalproducts.html',rentalpage=True,list1=list1,loggedIn=loggedIn,productid=productid,check=check,rent_status=rent_status,rentalproducts=RentalproductsDataall,categoryData=categoryDataall,ProducerData = ProducerData,data=locdata,catdata=catdata,msg1=msg1,msg2=msg2)
+    return render_template('rentalproducts.html',rentalpage=True,list1=list1,loggedIn=loggedIn,productid=productid,check=check,rent_status=rent_status,rentalproducts=Rentalproductsdataall,categorydata=categorydataall,Producerdata = Producerdata,data=locdata,catdata=catdata,msg1=msg1,msg2=msg2)
 
 @app.route("/getrentalowners")
 def getrentalowners():
-    data=getRentOwnersDetails(loc="Dispur")
-    RentalproductsDataall = RentalProduct.query.all()
-    return render_template('home.html', rentalproducts=RentalproductsDataall,ProducerData=data)
+    data=getRentOwnersdetails(loc="dispur")
+    Rentalproductsdataall = RentalProduct.query.all()
+    return render_template('home.html', rentalproducts=Rentalproductsdataall,Producerdata=data)
 
 @app.route("/bookingForm",methods=['GET','POST'])
 def bookingForm():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
     firstName=firstName.upper()
     productid=request.args.get("productid")
     locdata = User.query.with_entities(User.city).all()
-    categoryData = RentalCategory.query.all()
-    productData = RentalProduct.query.all()
+    categorydata = RentalCategory.query.all()
+    productdata = RentalProduct.query.all()
     if userid:
-        productData = RentalProducerProduct.query.with_entities(RentalProducerProduct.productid).filter(
+        productdata = RentalProducerProduct.query.with_entities(RentalProducerProduct.productid).filter(
             RentalProducerProduct.producerid == userid) \
             .join(RentalProduct, RentalProduct.productid == RentalProducerProduct.productid) \
             .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.description,
@@ -1304,12 +1304,12 @@ def bookingForm():
                          RentalProduct.city).all()
 
     if productid:
-        productData=RentalProduct.query.filter(RentalProduct.productid==productid).all()
-        categoryData = RentalCategory.query.join(RentalProductCategory,RentalProductCategory.productid==productid)\
+        productdata=RentalProduct.query.filter(RentalProduct.productid==productid).all()
+        categorydata = RentalCategory.query.join(RentalProductCategory,RentalProductCategory.productid==productid)\
                     .add_columns(RentalCategory.categoryid,RentalCategory.category_name,RentalProductCategory.categoryid)\
                     .filter(RentalProductCategory.categoryid == RentalCategory.categoryid).all()
 
-    return render_template('rentBooking.html', firstName=firstName,data=locdata, categoryData=categoryData, productdata=productData)
+    return render_template('rentBooking.html', firstName=firstName,data=locdata, categorydata=categorydata, productdata=productdata)
 
 
 
@@ -1325,7 +1325,7 @@ def addRentalProduct():
      for item in scaleoptions:
          mydict[item[0]] = item[1]
      ##logging.warning(mydict)
-     form.price_scale.choices = scaleoptions
+     form.product_review.choices = scaleoptions
 
 
      #form.user.choices = [(row.userid, row.fname) for row in User.query.all()]
@@ -1333,8 +1333,8 @@ def addRentalProduct():
      if form.validate_on_submit():
          if form.image.data:
              product_icon = save_picture(form.image.data)
-         selectedscale = mydict[form.price_scale.data]
-         product = RentalProduct(city=form.city.data,price_scale=selectedscale, product_name=form.productName.data, description=form.productDescription.data, image=product_icon, quantity=form.productQuantity.data,product_rating=0, product_review='', regular_price=form.productPrice.data)
+         selectedscale = mydict[form.product_review.data]
+         product = RentalProduct(city=form.city.data,price_scale=selectedscale, product_name=form.productName.data, description=form.productdescription.data, image=product_icon, quantity=form.productQuantity.data,product_rating=0, product_review='', regular_price=form.productPrice.data)
 
          db.session.add(product)
          db.session.commit()
@@ -1374,7 +1374,7 @@ def update_rentproduct(product_id):
      for item in scaleoptions:
          mydict[item[0]] = item[1]
      ##logging.warning(mydict)
-     form.price_scale.choices = scaleoptions
+     form.product_review.choices = scaleoptions
 
 
      #form.user.choices = [(row.userid, row.fname) for row in User.query.all()]
@@ -1382,8 +1382,8 @@ def update_rentproduct(product_id):
      if form.validate_on_submit():
          if form.image.data:
              product_icon = save_picture(form.image.data)
-         selectedscale = mydict[form.price_scale.data]
-         product = RentalProduct(city=form.city.data,price_scale=selectedscale, product_name=form.productName.data, description=form.productDescription.data, image=product_icon, quantity=form.productQuantity.data,product_rating=0, product_review='', regular_price=form.productPrice.data)
+         selectedscale = mydict[form.product_review.data]
+         product = RentalProduct(city=form.city.data,price_scale=selectedscale, product_name=form.productName.data, description=form.productdescription.data, image=product_icon, quantity=form.productQuantity.data,product_rating=0, product_review='', regular_price=form.productPrice.data)
 
          db.session.add(product)
          db.session.commit()
@@ -1431,7 +1431,7 @@ def delete_rentproduct(product_id):
 @app.route("/getallBookings", methods=['GET'])
 def getallBookings():
  bookings = RentalOrder.query.all()
- loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
 
  #logging.warning('userid inside getallbookings',userid)
  if isUserAdmin() == 2:
@@ -1451,7 +1451,7 @@ def getallBookings():
 @app.route("/removeFromRentalCart")
 def removeFromRentalCart():
  productId = int(request.args.get('productId'))
- loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserdetails()
  kwargs = {'userid': userId, 'productid': productId}
  cart = RentalCart.query.filter_by(**kwargs).first()
  if productId is not None:
@@ -1471,9 +1471,9 @@ def displayRentalCategory(category_name=None):
             RentalCategory.category_name == category_name).first()
         categoryId = categoryId[0]
         ##logging.warning('categoryId',categoryId)
-    loggedIn, firstName, noOfItems, userid = getLoginUserDetails()
+    loggedIn, firstName, noOfItems, userid = getLoginUserdetails()
     if producerId:
-        productDetailsByCategoryId = RentalProduct.query.join(RentalProducerProduct) \
+        productdetailsByCategoryId = RentalProduct.query.join(RentalProducerProduct) \
             .filter(RentalProducerProduct.producerid == producerId) \
             .join(RentalProductCategory, RentalProduct.productid == RentalProductCategory.productid) \
             .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,
@@ -1482,17 +1482,17 @@ def displayRentalCategory(category_name=None):
             .filter(RentalCategory.categoryid == int(categoryId)) \
             .add_columns(RentalCategory.category_name) \
             .all()
-        print('entered part',productDetailsByCategoryId)
+        print('entered part',productdetailsByCategoryId)
     else:
-        productDetailsByCategoryId = RentalProduct.query.join(RentalProductCategory, RentalProduct.productid == RentalProductCategory.productid) \
+        productdetailsByCategoryId = RentalProduct.query.join(RentalProductCategory, RentalProduct.productid == RentalProductCategory.productid) \
              .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,RentalProduct.image) \
              .join(RentalCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
              .filter(RentalCategory.categoryid == int(categoryId)) \
              .add_columns(RentalCategory.category_name) \
              .all()
-    if len(productDetailsByCategoryId)!= 0:
-         categoryName = productDetailsByCategoryId[0].category_name
-         data = productDetailsByCategoryId
+    if len(productdetailsByCategoryId)!= 0:
+         categoryName = productdetailsByCategoryId[0].category_name
+         data = productdetailsByCategoryId
          return render_template('displayrentalCategory.html', data=data, loggedIn=loggedIn, firstName=firstName,
                                 noOfItems=noOfItems, categoryName=categoryName)
     else:
@@ -1500,17 +1500,17 @@ def displayRentalCategory(category_name=None):
 
 
 #######################################################################################3333
-@app.route("/rentalproductDescription")
-def rentalproductDescription():
- #logging.warning('inside rentalproductDescription ')
- loggedIn, firstName, noOfItems,userid= getLoginUserDetails()
+@app.route("/rentalproductdescription")
+def rentalproductdescription():
+ #logging.warning('inside rentalproductdescription ')
+ loggedIn, firstName, noOfItems,userid= getLoginUserdetails()
  list1=[]
  rent_status=0
  start_date=current_date
  end_date=current_date
  productid = request.args.get('productid')
  #logging.warning('productid of pro',productid)
- productDetailsByProductId = getrentalProductDetails(productid)
+ productdetailsByProductId = getrentalProductdetails(productid)
 
  p = RentalOrder.query.filter_by(rentalproductid=productid).first()
  #logging.warning('Rental Order Status', p)
@@ -1527,18 +1527,18 @@ def rentalproductDescription():
 
  productid = request.args.get("productid")
  locdata = User.query.with_entities(User.city).all()
- categoryData = RentalCategory.query.all()
- productData = RentalProduct.query.all()
+ categorydata = RentalCategory.query.all()
+ productdata = RentalProduct.query.all()
 
  if productid:
-     productData = RentalProduct.query.filter(RentalProduct.productid == productid).all()
-     categoryData = RentalCategory.query.join(RentalProductCategory, RentalProductCategory.productid == productid) \
+     productdata = RentalProduct.query.filter(RentalProduct.productid == productid).all()
+     categorydata = RentalCategory.query.join(RentalProductCategory, RentalProductCategory.productid == productid) \
          .add_columns(RentalCategory.categoryid, RentalCategory.category_name, RentalProductCategory.categoryid) \
          .filter(RentalProductCategory.categoryid == RentalCategory.categoryid).all()
 
- #return render_template('rentBooking.html', data=locdata, categoryData=categoryData, productdata=productData)
+ #return render_template('rentBooking.html', data=locdata, categorydata=categorydata, productdata=productdata)
 
- return render_template("rentalproductDescription.html", locdata=locdata, categoryData=categoryData, productdata=productData,data=productDetailsByProductId, loggedIn=loggedIn,rent_status=rent_status,start_date=start_date,end_date=end_date)
+ return render_template("rentalproductdescription.html", locdata=locdata, categorydata=categorydata, productdata=productdata,data=productdetailsByProductId, loggedIn=loggedIn,rent_status=rent_status,start_date=start_date,end_date=end_date)
 
 
 
