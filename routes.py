@@ -3,9 +3,6 @@ Added comment
 '''
 import os
 import secrets
-
-
-
 from flask import render_template, request,abort
 from __init__ import *
 #from __init__ import db,mysql
@@ -14,7 +11,8 @@ from PIL import Image
 #import plotly.graph_objs as go
 from flask import Markup,flash
 from models import *
-from forms import *
+from forms import * 
+#from forms import getLoginUserDetails
 from flask import session
 import random
 
@@ -22,7 +20,7 @@ from flask import url_for, flash, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, RadioField, FloatField, SelectField
 from flask_wtf.file import FileField, FileAllowed
-from wtforms.validators import dataRequired, Length, Email
+from wtforms.validators import Length, Email,Required
 
 loggedIn=False
 firstName="guest"
@@ -47,7 +45,7 @@ current_date = current_date[0]
 
 #session_data={}
 def login_details():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     isadmin=isUserAdmin()
     return isadmin,loggedIn, firstName, productCountinKartForGivenUser, userid
 
@@ -133,7 +131,7 @@ def blog():
 
 @app.route("/post/new", methods=['GET', 'POST'])
 def new_post():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=userid)
@@ -147,7 +145,7 @@ def new_post():
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     post = Post.query.get_or_404(post_id)
     #logging.warning(post)
     return render_template('post.html', title=post.title, post=post,userid=userid,firstName=firstName)
@@ -156,7 +154,7 @@ def post(post_id):
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 
 def update_post(post_id):
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     post = Post.query.get_or_404(post_id)
 
     if post.author != userid:
@@ -177,7 +175,7 @@ def update_post(post_id):
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 def delete_post(post_id):
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     post = Post.query.get_or_404(post_id)
     if post.author != userid:
         abort(403)
@@ -191,14 +189,14 @@ def delete_post(post_id):
 @app.route("/sellProducts",methods=['POST','GET'])
 def sellProducts():
        city_name=None
-       loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+       loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
        ##logging.warning(loggedIn,firstName,productCountinKartForGivenUser)
        productsdataall = Product.query.all()
        locationdataall = User.query.with_entities(User.city).filter(User.isadmin == 1).all()
        locationdataall = list(set(locationdataall))
        allProductdetails = getAllProducts()
-       allProductsMassageddetails = massageItemdata(allProductdetails)
-       categorydata= getCategorydetails()
+       allProductsMassageddetails = massageItemData(allProductdetails)
+       categorydata= getCategoryDetails()
 
        data1 = ProducerProduct.query.join(ProductCategory, ProducerProduct.productid == ProductCategory.productid) \
            .join(User, User.userid == ProducerProduct.producerid) \
@@ -220,8 +218,8 @@ def sellProducts():
        for item in data:
            print('final',item)
 
-       #Producercategory,data= getProducerdetails()
-       #Producerrentcategory, data2 = getProducerdetails(rent=True)
+       #Producercategory,data= getProducerDetails()
+       #Producerrentcategory, data2 = getProducerDetails(rent=True)
        #print(Producerrentcategory,data2)
 
        categorydataall = Category.query.all()
@@ -259,8 +257,7 @@ def sellProducts():
                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.city, User.email,
                             ProducerProduct.productid) \
                .join(Product, Product.productid == ProducerProduct.productid) \
-               .add_columns(Product.productid, Product.product_name, Product.regular_price,
-                            Product.image, Product.quantity).all()
+               .add_columns(Product.productid, Product.product_name, Product.regular_price,Product.image, Product.quantity).all()
 
 
 
@@ -298,7 +295,7 @@ def productAlertNotification():
 
 @app.route("/neighbourFarmers",methods=['POST','GET'])
 def neighbourFarmers():
-    return render_template("neighbourFarmers.html",Producerdata = getProducerdetails())
+    return render_template("neighbourFarmers.html",Producerdata = getProducerDetails())
 
 
 
@@ -372,7 +369,7 @@ def login():
 
         if is_valid(email, password):
                 session['email'] = email
-                loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+                loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
                 session['email'] = email
                 session.modified = True
                 #logging.warning('INSIdE LOGIN:{0}'.format(session,session['email']))
@@ -425,7 +422,7 @@ def register():
 def root():
 
 
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     #logger.info(loggedIn,firstName)
     #updateProductStockStatus()
 
@@ -442,7 +439,7 @@ def displayCategory(category_name=None):
              Category.category_name == category_name).first()
         categoryId=categoryId[0]
         ##logging.warning('categoryId',categoryId)
-    loggedIn, firstName, noOfItems, userid = getLoginUserdetails()
+    loggedIn, firstName, noOfItems, userid = getLoginUserDetails()
     if producerId:
         productdetailsByCategoryId = Product.query.join(ProducerProduct)\
             .filter(ProducerProduct.producerid == producerId) \
@@ -475,7 +472,7 @@ def displayCategory(category_name=None):
 '''
 @app.route("/displayProductsByLocation")
 def displayProductsByLocation():
-     loggedIn, firstName, noOfItems,userid = getLoginUserdetails()
+     loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
      producerid = request.args.get("producerid")
      productdetailsByLocation = Product.query.join(ProducerProduct, Product.productid == ProducerProduct.productid) \
          .add_columns(Product.productid, Product.product_name, Product.regular_price, Product.product_review,
@@ -487,7 +484,7 @@ def displayProductsByLocation():
 
 @app.route("/displayProducerPage")
 def displayProducerPage():
- loggedIn, firstName, noOfItems,userid = getLoginUserdetails()
+ loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
  ##logging.warning(userid)
  #farmdescription = User.query.with_entities(User.farmdescription).filter(User.userid==producerid)
  try:
@@ -528,7 +525,7 @@ def displayProducerPage():
 
 @app.route("/displayProductsByProducer")
 def displayProductsByProducer():
- loggedIn, firstName, noOfItems,userid = getLoginUserdetails()
+ loggedIn, firstName, noOfItems,userid = getLoginUserDetails()
  producerid = request.args.get("producerid")
  categoryid = request.args.get("categoryid")
  rent=False
@@ -569,7 +566,7 @@ def displayProductsByProducer():
 
 @app.route("/productdescription")
 def productdescription():
- loggedIn, firstName, noOfItems,userid= getLoginUserdetails()
+ loggedIn, firstName, noOfItems,userid= getLoginUserDetails()
  productid = request.args.get('productId')
  productdetailsByProductId = getProductdetails(productid)
  return render_template("productdescription.html", data=productdetailsByProductId, loggedIn=loggedIn,
@@ -592,14 +589,14 @@ def addToCart():
      if request.method=='POST':
          num_days =  request.form.get('num_days')
          ##logging.warning('inside Number of days',num_days)
-         extractAndPersistKartdetailsUsingSubquery(productId, num_products, rent=True, num_days=num_days)
+         extractAndPersistKartDetailsUsingSubquery(productId, num_products, rent=True, num_days=num_days)
  else:
      if request.method == 'POST':
          #logging.warning('inside sell products')
          num_products=request.form.get("numproduct")
          #Quantity=request.form.get("price")
          #logging.warning('Number of products',num_products)
-         extractAndPersistKartdetailsUsingSubquery(productId, num_products)
+         extractAndPersistKartDetailsUsingSubquery(productId, num_products)
          if buyNow:
              flash('Item successfully added to cart !!', 'success')
              return redirect(url_for('checkoutForm'))
@@ -612,7 +609,7 @@ def addToCart():
 @app.route("/cart")
 def cart():
 
- loggedIn, firstName, productCountinKartForGivenUser,userid = getLoginUserdetails()
+ loggedIn, firstName, productCountinKartForGivenUser,userid = getLoginUserDetails()
  cartdetails1, totalsum1,tax1, cartdetails2, totalsum2,tax2  = getusercartdetails()
  #locdata = User.query.all()
  data={}
@@ -749,7 +746,7 @@ def admin():
  global firstName
  global isadmin
  global admin
- loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserdetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
  #logging.warning('inside admin,Userid{0},isadmin{1}'.format(userid,isadmin))
  isadmin = User.query.with_entities(User.isadmin).filter( User.userid == userId).first()
  #logging.warning('isadmin value',isadmin[0])
@@ -764,7 +761,7 @@ def admin():
 
 @app.route("/farmer", methods=['GET'])
 def farmer():
- loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserdetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
  return render_template('Farmer.html', firstName=firstName, loggedIn=loggedIn, isadmin=isadmin, userid=userid,
                         productCountinKartForGivenUser=productCountinKartForGivenUser)
 
@@ -775,7 +772,7 @@ def farmer():
 def getProducts():
  products=Product.query.all()
  #global userid
- loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
  #logging.warning('userid',userid)
  if isUserAdmin() == 2:
      products = Product.query.all()
@@ -1026,7 +1023,7 @@ def booking():
     ##logging.warning('Rental productid',rentalproductid)
 
 
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
 
     if request.method=='POST'and loggedIn:
         rentalorder_date = request.form['orderstartdate']
@@ -1069,7 +1066,7 @@ def booking():
         #logging.warning('Order is not confirmed')
 
 
-    extractAndPersistKartdetailsUsingSubquery(productId=rentalproductid, rent=True, num_days=days)
+    extractAndPersistKartDetailsUsingSubquery(productId=rentalproductid, rent=True, num_days=days)
 
     cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2 = getusercartdetails()
 
@@ -1111,19 +1108,19 @@ def check_available():
 
 class addRentalCategoryForm(FlaskForm):
  category_image = FileField('Product Image', validators=[FileAllowed(['jpg', 'png'])])
- category_name = StringField('Category Name', validators=[dataRequired()])
+ category_name = StringField('Category Name', validators=[Required()])
  submit = SubmitField('Save')
 
 
 
 class addRentalProductForm(FlaskForm):
  category = SelectField('Rental Category:', coerce=int, id='select_category')
- productName = StringField('RentalProduct Name:', validators=[dataRequired()])
- productdescription = TextAreaField('RentalProduct description:', validators=[dataRequired()])
+ productName = StringField('RentalProduct Name:', validators=[Required()])
+ productdescription = TextAreaField('RentalProduct description:', validators=[Required()])
  price_scale= SelectField('RentalPrice_scale:', coerce=int, id='select_scale')
- productPrice = FloatField('RentalProduct Price:', validators=[dataRequired()])
- productQuantity = IntegerField('RentalProduct Quantity:', validators=[dataRequired()])
- city = StringField('City:', validators=[dataRequired()])
+ productPrice = FloatField('RentalProduct Price:', validators=[Required()])
+ productQuantity = IntegerField('RentalProduct Quantity:', validators=[Required()])
+ city = StringField('City:', validators=[Required()])
  image = FileField('RentalProduct Image', validators=[FileAllowed(['jpg', 'png'])])
  submit = SubmitField('Save')
 
@@ -1186,7 +1183,7 @@ def addRentalCategory():
 ####################Rental product updation/modification##############################################################33
 @app.route("/rentalproducts",methods=['POST','GET'])
 def rentalproducts():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     productid=99999
     list1 = []
     rent_status=0
@@ -1216,7 +1213,7 @@ def rentalproducts():
     catdata=RentalCategory.query.all()
 
     Rentalproductsdataall = RentalProduct.query.all()
-    Producerdata = getRentOwnersdetails()
+    Producerdata = getRentOwnersDetails()
     locationdataall = User.query.with_entities(User.city).filter(User.isadmin == 1).all()
     categorydataall =  RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
         .join(RentalProduct, RentalProduct.productid == RentalProductCategory.productid) \
@@ -1243,7 +1240,7 @@ def rentalproducts():
 
         msg1 = "FARMERS LISTING OF CATEGORY:{}".format(category_name.upper())
         msg2 = "RENTAL PROdUCTS OF CATEGORY {}".format(category_name.upper())
-        Producerdata= getRentOwnersdetails(loc=city_name,cat=categoryId)
+        Producerdata= getRentOwnersDetails(loc=city_name,cat=categoryId)
 
         Rentalproductsdataall = RentalProduct.query.join(RentalProducerProduct, RentalProduct.productid == RentalProducerProduct.productid) \
         .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.regular_price,
@@ -1282,13 +1279,13 @@ def rentalproducts():
 
 @app.route("/getrentalowners")
 def getrentalowners():
-    data=getRentOwnersdetails(loc="dispur")
+    data=getRentOwnersDetails(loc="dispur")
     Rentalproductsdataall = RentalProduct.query.all()
     return render_template('home.html', rentalproducts=Rentalproductsdataall,Producerdata=data)
 
 @app.route("/bookingForm",methods=['GET','POST'])
 def bookingForm():
-    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+    loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     firstName=firstName.upper()
     productid=request.args.get("productid")
     locdata = User.query.with_entities(User.city).all()
@@ -1431,7 +1428,7 @@ def delete_rentproduct(product_id):
 @app.route("/getallBookings", methods=['GET'])
 def getallBookings():
  bookings = RentalOrder.query.all()
- loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserdetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
 
  #logging.warning('userid inside getallbookings',userid)
  if isUserAdmin() == 2:
@@ -1451,7 +1448,7 @@ def getallBookings():
 @app.route("/removeFromRentalCart")
 def removeFromRentalCart():
  productId = int(request.args.get('productId'))
- loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserdetails()
+ loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
  kwargs = {'userid': userId, 'productid': productId}
  cart = RentalCart.query.filter_by(**kwargs).first()
  if productId is not None:
@@ -1471,7 +1468,7 @@ def displayRentalCategory(category_name=None):
             RentalCategory.category_name == category_name).first()
         categoryId = categoryId[0]
         ##logging.warning('categoryId',categoryId)
-    loggedIn, firstName, noOfItems, userid = getLoginUserdetails()
+    loggedIn, firstName, noOfItems, userid = getLoginUserDetails()
     if producerId:
         productdetailsByCategoryId = RentalProduct.query.join(RentalProducerProduct) \
             .filter(RentalProducerProduct.producerid == producerId) \
@@ -1503,7 +1500,7 @@ def displayRentalCategory(category_name=None):
 @app.route("/rentalproductdescription")
 def rentalproductdescription():
  #logging.warning('inside rentalproductdescription ')
- loggedIn, firstName, noOfItems,userid= getLoginUserdetails()
+ loggedIn, firstName, noOfItems,userid= getLoginUserDetails()
  list1=[]
  rent_status=0
  start_date=current_date
