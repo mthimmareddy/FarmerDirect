@@ -141,20 +141,22 @@
 									<section class="about py-5">
 	<div class="container py-lg-3 py-2" style="margin-top:-100px;">
 		<h3 class="heading text-capitalize text-center">BUY AND RENT FROM YOUR NEIGHBOURHOOD</h3>
-		    <form class="navbar-form navbar-left" action="/farmers?loc=city_name">
+		    <form class="navbar-form navbar-left" action="/farmers?loc=citySel?category=catSel">
 				 <div class="form-group">
 					 <!--<input class="col-md-4" type="text" class="form-control" placeholder="All Categories"  name="category" />
 					 <input class="col-md-4" type="text" class="form-control" placeholder="All Cities"  name="city_name" />-->
 
 					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" required id="id_catSel">
-                                       {% for row in categorydata %}
-						             <option value="{{row.categoryid}}" placeholder="select Loc">{{row.category_name}}</option>
+						 <option value="">Select Category</option>
+                                       {% for row in categoryData %}
+						             <option value="{{row.category_name}}" placeholder="select Loc">{{row.category_name}}</option>
                                     {% endfor %}
-					 </select>
+					 </select><br>
 
-					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" required id="id_catSel">
-                                       {% for row in locationdataall %}
-						             <option value="{{row.categoryid}}" placeholder="select Loc">{{row.city}}</option>
+					 <select id="citySel" name="citySel" size="1"  class="form-control" maxlength="75" required id="id_citytSel">
+						 <option value="">Select City</option>
+                                       {% for row in locationData %}
+						             <option value="{{row.city}}" placeholder="select Loc">{{row.city}}</option>
                                     {% endfor %}
 					 </select>
 				 </div>

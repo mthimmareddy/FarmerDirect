@@ -196,7 +196,7 @@ def getProducerDetails(rent=False):
 
     return farmercategories,Producerdata
 
-def getFarmerData(city_name=None):
+def getFarmerData(city_name=None,category_name=None):
     data=''
     data1 = ProducerProduct.query.join(ProductCategory, ProducerProduct.productid == ProductCategory.productid) \
         .join(User, User.userid == ProducerProduct.producerid) \
@@ -212,29 +212,57 @@ def getFarmerData(city_name=None):
         .add_columns(RentalProductCategory.categoryid).join(RentalCategory,
                                                             RentalCategory.categoryid == RentalProductCategory.categoryid) \
         .add_columns(RentalCategory.category_name).all()
-
-    if city_name:
-        data1 = User.query.filter(User.city == city_name).join(ProducerProduct,
-                                                                             User.userid == ProducerProduct.producerid) \
-            .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2, User.city,
-                         User.zipcode, User.email) \
-            .join(ProductCategory, ProductCategory.productid == ProducerProduct.productid) \
-            .add_columns(ProductCategory.categoryid).join(Category, Category.categoryid == ProductCategory.categoryid) \
-            .add_columns(Category.category_name, Category.categoryid).all()
-
-        data2 = User.query.filter(User.city == city_name).join(RentalProducerProduct,
-                                                                          User.userid == RentalProducerProduct.producerid) \
-            .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2,
-                         User.city, User.zipcode, User.email) \
-            .join(RentalProductCategory, RentalProductCategory.productid == RentalProducerProduct.productid) \
-            .add_columns(RentalProductCategory.categoryid).join(RentalCategory,
-                                                                RentalCategory.categoryid == RentalProductCategory.categoryid) \
-            .add_columns(RentalCategory.category_name, RentalCategory.categoryid).all()
-
-
     data = modifyProducerdata(data1, data2)
 
 
+    if city_name and category_name:
+        if Category.query.filter_by(category_name=category_name).first():
+            data1 = User.query.filter(User.city == city_name).join(ProducerProduct,
+                                                                                 User.userid == ProducerProduct.producerid) \
+                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2, User.city,
+                             User.zipcode, User.email) \
+                .join(ProductCategory, ProductCategory.productid == ProducerProduct.productid) \
+                .add_columns(ProductCategory.categoryid).join(Category, Category.categoryid == ProductCategory.categoryid) \
+                .add_columns(Category.category_name, Category.categoryid).filter(Category.category_name==category_name).all()
+        else:
+            data1 = User.query.filter(User.city == city_name).join(ProducerProduct,
+                                                                   User.userid == ProducerProduct.producerid) \
+                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2,
+                             User.city,
+                             User.zipcode, User.email) \
+                .join(ProductCategory, ProductCategory.productid == ProducerProduct.productid) \
+                .add_columns(ProductCategory.categoryid).join(Category,
+                                                              Category.categoryid == ProductCategory.categoryid) \
+                .add_columns(Category.category_name, Category.categoryid).all()
+
+        if RentalCategory.query.filter_by(category_name=category_name).first():
+            print('inside rental data2')
+            data2 = User.query.filter(User.city == city_name).join(RentalProducerProduct,
+                                                                   User.userid == RentalProducerProduct.producerid) \
+                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2,
+                             User.city, User.zipcode, User.email) \
+                .join(RentalProductCategory, RentalProductCategory.productid == RentalProducerProduct.productid) \
+                .add_columns(RentalProductCategory.categoryid).join(RentalCategory,
+                                                                    RentalCategory.categoryid == RentalProductCategory.categoryid) \
+                .add_columns(RentalCategory.category_name, RentalCategory.categoryid).filter(RentalCategory.category_name==category_name).all()
+        else:
+
+
+            data2 = User.query.filter(User.city == city_name).join(RentalProducerProduct,
+                                                                              User.userid == RentalProducerProduct.producerid) \
+                .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2,
+                             User.city, User.zipcode, User.email) \
+                .join(RentalProductCategory, RentalProductCategory.productid == RentalProducerProduct.productid) \
+                .add_columns(RentalProductCategory.categoryid).join(RentalCategory,
+                                                                    RentalCategory.categoryid == RentalProductCategory.categoryid) \
+                .add_columns(RentalCategory.category_name, RentalCategory.categoryid).all()
+        print(data1,data2,type(data1),type(data2))
+
+        if len(data1)!=0 and len(data2)!=0:
+            data = modifyProducerdata(data1, data2)
+        else:
+            data=[]
+            print('no results found')
     return data
 
 

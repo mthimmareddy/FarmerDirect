@@ -192,17 +192,19 @@ def farmers():
        category_name=None
        loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
 
-
-
+       category_name = request.args.get('catSel')
+       city_name = request.args.get('citySel')
+       print(category_name)
        data= getFarmerData()
        msg = "SHOWING THE FARMERS LISTING ALL CATEGORIES"
 
-       city_name = request.args.get('city_name')
-       msg_city="SHOWING THE ALL PROdUCTS FROM ALL LOCATIONS"
 
-       if city_name:
-           data = getFarmerData(city_name=city_name)
-           msg_city = "SHOWING THE ALL PRODUCTS FROM {0}".format(city_name.upper())
+       msg_city="SHOWING THE ALL PRODUCTS FROM ALL LOCATIONS"
+       if city_name and category_name:
+           data = getFarmerData(city_name=city_name,category_name=category_name)
+           msg = "SHOWING THE ALL PRODUCTS FROM {0} AND {0}".format(city_name.upper(),category_name.upper())
+
+
 
 
 
@@ -354,12 +356,15 @@ def register():
 @app.route("/home")
 def root():
     loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
-    categorydata = getCategoryDetails()
-    categorydataall = Category.query.all()
+    #categoryData = getCategoryDetails()
+    categoryData = Category.query.all()
+    rentcategoryData = RentalCategory.query.all()
+    Data=categoryData+rentcategoryData
+
     locationdataall = User.query.with_entities(User.city).filter(User.isadmin != 0).all()
-    locationdataall = list(set(locationdataall))
-    print(locationdataall,categorydata)
-    return render_template('index.html',firstName=firstName,categorydata=categorydata,locationdataall=locationdataall
+    locationData = list(set(locationdataall))
+    #print(locationdataall,categorydata)
+    return render_template('index.html',firstName=firstName,categoryData=Data,locationData=locationData
                            ,productCountinKartForGivenUser=productCountinKartForGivenUser)
 
 
