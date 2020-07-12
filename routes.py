@@ -1438,7 +1438,7 @@ def rentalproductDescription():
 
  #return render_template('rentBooking.html', data=locdata, categorydata=categorydata, productdata=productdata)
 
- return render_template("rentalproductdescription.html", locdata=locdata, categorydata=categorydata, productdata=productdata,data=productdetailsByProductId, loggedIn=loggedIn,rent_status=rent_status,start_date=start_date,end_date=end_date)
+ return render_template("rentalproductDescription.html", locdata=locdata, categorydata=categorydata, productdata=productdata,data=productdetailsByProductId, loggedIn=loggedIn,rent_status=rent_status,start_date=start_date,end_date=end_date)
 
 
 
