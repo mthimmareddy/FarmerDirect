@@ -142,14 +142,16 @@
 		<h2>SHOWING ALL RENTAL CATEGORIES LISTED BY {{Producername}}</h2>
 		<ul>
 			{% for row in RentalCategoryData %}
-
-			<li id="rentcategory1" class="col-md-12" >
-				<a href="/displayProductsByProducer?rentcategoryid={{row.categoryid}}&producerid={{row.producerid}}" style="color:blue;">{{row.category_name.upper()}}</a>
-				<!--<a  href="/displayProductsByProducer?rentcategoryid={{row.categoryid}}&producerid={{row.producerid}}">
+           <li id="category1" class="col-md-12" >
+				<a href="/displayProductsByProducer?rentcategoryid={{row.categoryid}}&producerid={{row.producerid}}" style="color:blue;">
+                    {{row.category_name.upper()}}</a>
+				<a href="/displayProductsByProducer?rentcategoryid={{row.categoryid}}&producerid={{row.producerid}}">
 				<img src={{url_for('static', filename='uploads/' + row.category_image) }} id="catIcon" />
-				</a>-->
+                </a>
 			</li>
 			{% endfor %}
+
+
 		</ul>
     </div></span>
     </div><br><br>
