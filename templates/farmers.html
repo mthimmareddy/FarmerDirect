@@ -66,9 +66,14 @@
 							 <td scope="col">Phone:  {{row[7]}}</td>
 						</tr>
 						 <tr>
+							 {% if row[8] %}
 							 <td>Rental Categories:{% for item in row[8] %}
 								  <a href="/displayRentalCategory/{{item}}?producerId={{row[1]}}">{{item+"; "}}</a>
 							{% endfor %}</td>
+							 {%else%}
+							 <td>Rental Categories: <a href="#" style="color:red">Not listed RentCategory</a></td>
+							 {%endif%}
+
 						 </tr>
 
 

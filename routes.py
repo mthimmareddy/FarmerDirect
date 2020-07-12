@@ -202,7 +202,7 @@ def farmers():
        msg_city="SHOWING THE ALL PRODUCTS FROM ALL LOCATIONS"
        if city_name and category_name:
            data = getFarmerData(city_name=city_name,category_name=category_name)
-           msg = "SHOWING THE ALL PRODUCTS FROM {0} AND {0}".format(city_name.upper(),category_name.upper())
+           msg = "SHOWING THE ALL PRODUCTS OF {1} FROM {0}".format(city_name.upper(),category_name.upper())
 
 
 
@@ -441,7 +441,7 @@ def displayProducerPage():
  ##logging.warning('farmdescription',Producername,farmdescription)
  services= RentalProduct.query.all()
 
- RentalCategorydata = RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
+ RentalCategoryData = RentalCategory.query.join(RentalProductCategory, RentalCategory.categoryid == RentalProductCategory.categoryid) \
      .add_columns(RentalCategory.category_name, RentalCategory.categoryid, RentalCategory.category_image) \
      .join(RentalProducerProduct, RentalProductCategory.productid == RentalProducerProduct.productid).filter(
      RentalProducerProduct.producerid == producerid) \
@@ -450,14 +450,14 @@ def displayProducerPage():
      .all()
 
 
- Categorydata = Category.query.join(ProductCategory, Category.categoryid == ProductCategory.categoryid) \
+ CategoryData = Category.query.join(ProductCategory, Category.categoryid == ProductCategory.categoryid) \
      .add_columns(Category.category_name,Category.categoryid,Category.category_image)\
      .join(ProducerProduct, ProductCategory.productid == ProducerProduct.productid).filter(ProducerProduct.producerid == producerid) \
      .add_columns(ProducerProduct.producerid).order_by(Category.categoryid.desc()) \
      .distinct(Category.categoryid) \
      .all()
 
- return render_template('displayProducerPage.html', RentalCategorydata=RentalCategorydata,services=services,Categorydata=Categorydata, loggedIn=loggedIn, firstName=firstName,
+ return render_template('displayProducerPage.html', RentalCategoryData=RentalCategoryData,services=services,CategoryData=CategoryData, loggedIn=loggedIn, firstName=firstName,
                         producerid=producerid,noOfItems=noOfItems,farmdescription=farmdescription,Producername=Producername.upper(),profile=profile_img)
 
 

@@ -258,7 +258,7 @@ def getFarmerData(city_name=None,category_name=None):
                 .add_columns(RentalCategory.category_name, RentalCategory.categoryid).all()
         print(data1,data2,type(data1),type(data2))
 
-        if len(data1)!=0 and len(data2)!=0:
+        if len(data1)!=0 or len(data2)!=0 :
             data = modifyProducerdata(data1, data2)
         else:
             data=[]
