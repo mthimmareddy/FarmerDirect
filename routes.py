@@ -926,11 +926,13 @@ def removeFromCart():
 def checkoutForm():
      address=''
      loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
-
-     customer=User.query.filter_by(email=session['email']).first()
-     address=customer.address1+customer.address2+"\nDistrict: "+customer.state+"\nCity: "+customer.city+\
+     try:
+         customer=User.query.filter_by(email=session['email']).first()
+         if customer:
+             address=customer.address1+customer.address2+"\nDistrict: "+customer.state+"\nCity: "+customer.city+\
              "\nState:"+customer.country+"\nZipCode:"+customer.zipcode+"\nEmail: "+customer.email+"\nPhone:"+customer.phone
-     #print(address)
+     except:
+         pass
 
      cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2 = getusercartdetails()
      #logging.warning('cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2',totalsum1, tax1,  totalsum2, tax2)

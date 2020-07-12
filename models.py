@@ -60,7 +60,7 @@ class Product(db.Model):
     image2 = db.Column(db.String(100), nullable=True)
     quantity = db.Column(db.Integer, nullable=False)
     regular_price = db.Column(db.DECIMAL)
-    product_scale = db.Column(db.String(20), nullable=True)
+    #product_scale = db.Column(db.String(20), nullable=True)
     product_rating = db.Column(db.DECIMAL)
     product_review = db.Column(db.String(100), nullable=True)
 
