@@ -196,6 +196,48 @@ def getProducerDetails(rent=False):
 
     return farmercategories,Producerdata
 
+def getFarmerData(city_name=None):
+    data=''
+    data1 = ProducerProduct.query.join(ProductCategory, ProducerProduct.productid == ProductCategory.productid) \
+        .join(User, User.userid == ProducerProduct.producerid) \
+        .add_columns(User.fname, User.image_file, User.userid, User.address1, User.address2, User.city, User.zipcode,
+                     User.phone) \
+        .add_columns(ProductCategory.categoryid).join(Category, Category.categoryid == ProductCategory.categoryid) \
+        .add_columns(Category.category_name).all()
+    data2 = RentalProducerProduct.query.join(RentalProductCategory,
+                                             RentalProducerProduct.productid == RentalProductCategory.productid) \
+        .join(User, User.userid == RentalProducerProduct.producerid) \
+        .add_columns(User.fname, User.image_file, User.userid, User.address1, User.address2, User.city,
+                     User.zipcode, User.phone) \
+        .add_columns(RentalProductCategory.categoryid).join(RentalCategory,
+                                                            RentalCategory.categoryid == RentalProductCategory.categoryid) \
+        .add_columns(RentalCategory.category_name).all()
+
+    if city_name:
+        data1 = User.query.filter(User.city == city_name).join(ProducerProduct,
+                                                                             User.userid == ProducerProduct.producerid) \
+            .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2, User.city,
+                         User.zipcode, User.email) \
+            .join(ProductCategory, ProductCategory.productid == ProducerProduct.productid) \
+            .add_columns(ProductCategory.categoryid).join(Category, Category.categoryid == ProductCategory.categoryid) \
+            .add_columns(Category.category_name, Category.categoryid).all()
+
+        data2 = User.query.filter(User.city == city_name).join(RentalProducerProduct,
+                                                                          User.userid == RentalProducerProduct.producerid) \
+            .add_columns(User.image_file, User.fname, User.phone, User.userid, User.address1, User.address2,
+                         User.city, User.zipcode, User.email) \
+            .join(RentalProductCategory, RentalProductCategory.productid == RentalProducerProduct.productid) \
+            .add_columns(RentalProductCategory.categoryid).join(RentalCategory,
+                                                                RentalCategory.categoryid == RentalProductCategory.categoryid) \
+            .add_columns(RentalCategory.category_name, RentalCategory.categoryid).all()
+
+
+    data = modifyProducerdata(data1, data2)
+
+
+    return data
+
+
 def modifyProducerdata(data1,data2):
     farmercategories = {}
     for item in data1:
@@ -407,6 +449,7 @@ def isUserAdmin():
 # Using Flask-SQL Alchemy SubQuery
 def extractAndPersistKartDetailsUsingSubquery(productId,quantity=1,rent=False,num_days=1):
     loggedIn, firstName, productCountinKartForGivenUser, userId = getLoginUserDetails()
+    print('userid',userId,firstName)
 
     subqury = Cart.query.filter(Cart.userid == userId).filter(Cart.productid == productId).subquery()
     qry = db.session.query(Cart.quantity).select_entity_from(subqury).all()
@@ -423,18 +466,25 @@ def extractAndPersistKartDetailsUsingSubquery(productId,quantity=1,rent=False,nu
                 break
 
     if len(qry) == 0:
+        print('quantity',quantity)
         cart = Cart(userid=userId, productid=productId, quantity=quantity)
+        #db.session.add(cart)
     else:
+        print('else quantity', quantity,qry[0][0])
         cart = Cart(userid=userId, productid=productId, quantity=int(qry[0][0]) + int(quantity))
+        #db.session.add(cart)
     if rent:
         subqury = RentalCart.query.filter(RentalCart.userid == userId).filter(RentalCart.productid == productId).subquery()
         qry = db.session.query(RentalCart.quantity).select_entity_from(subqury).all()
         if len(qry) == 0:
             cart = RentalCart(userid=userId, productid=productId, quantity=quantity,days=num_days)
+            #db.session.add(cart)
         else:
             cart = RentalCart(userid=userId, productid=productId, quantity=int(qry[0][0]) + int(quantity),days=num_days)
-    print(cart)
+            db.session.add(cart)
+    #print(cart)
     db.session.merge(cart)
+    print(cart)
     db.session.flush()
     db.session.commit()
 

@@ -102,20 +102,19 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/sellProducts">BUY</a>
+							<a class="nav-link" href="/farmers">FARMERS</a>
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link" href="/rentalproducts">RENTOUT</a>
-
-						<li class="nav-item">
-							<a class="nav-link" href="/marketwatch">MARKET RATES</a>
-						</li>
+							<a class="nav-link" href="/services">SERVICES</a>
 						<li class="nav-item">
 							<a class="nav-link" href="/blog">BLOG</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/neighbourFarmers">NEIGHBOUR-CROPINFO</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/marketwatch">MARKET RATES</a>
 						</li>
 
 					</ul>
@@ -142,12 +141,26 @@
 									<section class="about py-5">
 	<div class="container py-lg-3 py-2" style="margin-top:-100px;">
 		<h3 class="heading text-capitalize text-center">BUY AND RENT FROM YOUR NEIGHBOURHOOD</h3>
-		    <form class="navbar-form navbar-left" action="/sellProducts?loc=city_name">
-				 <div class="col-md-12 form-group">
-					 <input class="col-md-4" type="text" class="form-control" placeholder="Category"  name="category" />
-					 <input class="col-md-4" type="text" class="form-control" placeholder="City or zipcode"  name="city_name" />
-					 <button type="submit" class="col-md-2 form-control btn btn-warning"  aria-label="Click to search">SEARCH</button>
+		    <form class="navbar-form navbar-left" action="/farmers?loc=city_name">
+				 <div class="form-group">
+					 <!--<input class="col-md-4" type="text" class="form-control" placeholder="All Categories"  name="category" />
+					 <input class="col-md-4" type="text" class="form-control" placeholder="All Cities"  name="city_name" />-->
+
+					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" required id="id_catSel">
+                                       {% for row in categorydata %}
+						             <option value="{{row.categoryid}}" placeholder="select Loc">{{row.category_name}}</option>
+                                    {% endfor %}
+					 </select>
+
+					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" required id="id_catSel">
+                                       {% for row in locationdataall %}
+						             <option value="{{row.categoryid}}" placeholder="select Loc">{{row.city}}</option>
+                                    {% endfor %}
+					 </select>
 				 </div>
+
+					 <button type="submit" class="col-md-2 form-control btn btn-warning"  aria-label="Click to search">SEARCH</button>
+
 
 			 </form>
 	</div>
@@ -156,8 +169,8 @@
 		<div class="about-head text-center ">
 			<div class="row about-grids-top mb-5">
 				<div class="col-lg-2 col-sm-4 col-6 about-grid p-0">
-					<i class="fa fa-handshake-o" aria-hidden="true"></i>
-					<h4>Buy Local</h4>
+					<i  href="\Farmers" class="fa fa-handshake-o" aria-hidden="true"></i>
+					<h4	>Buy Local</h4>
 				</div>
 				<div class="col-lg-2 col-sm-4 col-6 about-grid p-0">
 					<i class="fa fa-leaf" aria-hidden="true"></i>

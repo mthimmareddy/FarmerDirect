@@ -12,12 +12,12 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			<a href="/displayProducerPage?producerid=2#prod1">Checkout otther categories</a>
+			<a href="/displayProducerPage?producerid=2#prod1">Checkout Other Categories</a>
 	<div class="row">
 		<div class="col-md-12">
              {% for item in data %}
              <div class="col-md-3"><br/>
-                 <form action="/addToCart?productId={{item.productid}}&numproduct={{val}}" method="POST" type="submit" onsubmit="return validate();">
+	 <form action="/addToCart?productId={{item.productid}}&numproduct={{val}}" method="POST" type="submit" onsubmit="return validate();">
             <table  class="table table-light" id="descriptionTable1">
 
 			<tr>
@@ -65,7 +65,7 @@
 
 
             </table>
-		 </form>
+	 </form>
 		 </div>
 			 {% endfor %}
 		 </div>
