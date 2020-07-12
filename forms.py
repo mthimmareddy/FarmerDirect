@@ -642,14 +642,26 @@ class checkoutForm(FlaskForm):
 # Gets form data for the sales transaction
 
 def extractOrderdetails(request, totalsum):
+    customer = User.query.filter_by(email=session['email']).first()
+    if customer:
+        fullname = customer.fname+" "+customer.lname
+        email = customer.email
+        address = customer.address1 + customer.address2 + "\nDistrict: " + customer.state + "\nCity: " + customer.city + \
+                  "\nState:" + customer.country + "\nZipCode:" + customer.zipcode
+        #address = customer.address1+" "+customer.address1
+        phone = customer.phone
+        city = customer.city
+        state = customer.state
+        zipcode = customer.zipcode
 
-    fullname = request.form['first_name']
-    email = request.form['email']
-    address = request.form['address_line_1']
-    phone = request.form['phone']
-    city = request.form['city']
-    state = request.form['state']
-    zipcode = request.form['postalcode']
+    else:
+        fullname = request.form['first_name']
+        email = request.form['email']
+        address = request.form['address_line_1']
+        phone = request.form['phone']
+        city = request.form['city']
+        state = request.form['state']
+        zipcode = request.form['postalcode']
     '''
     cctype = request.form['cardtype']
     ccnumber = request.form['cardnumber']
