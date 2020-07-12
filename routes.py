@@ -357,15 +357,23 @@ def register():
 def root():
     loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     #categoryData = getCategoryDetails()
+    categoryDict={}
     categoryData = Category.query.all()
+    categoryDict["Buy"]=categoryData
     rentcategoryData = RentalCategory.query.all()
+    categoryDict["Rent"]=rentcategoryData
+    for key,value in categoryDict.items():
+        print(key,value)
+
     Data=categoryData+rentcategoryData
+
+
 
     locationdataall = User.query.with_entities(User.city).filter(User.isadmin != 0).all()
     locationData = list(set(locationdataall))
     #print(locationdataall,categorydata)
     return render_template('index.html',firstName=firstName,categoryData=Data,locationData=locationData
-                           ,productCountinKartForGivenUser=productCountinKartForGivenUser)
+                           ,productCountinKartForGivenUser=productCountinKartForGivenUser,categoryDict=categoryDict)
 
 
 @app.route('/displayCategory')
@@ -916,12 +924,19 @@ def removeFromCart():
 
 @app.route("/checkoutPage")
 def checkoutForm():
+     address=''
+     loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
 
- cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2 = getusercartdetails()
- #logging.warning('cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2',totalsum1, tax1,  totalsum2, tax2)
- grand_total= float(totalsum1+float(tax1)+totalsum2+float(tax2))
+     customer=User.query.filter_by(email=session['email']).first()
+     address=customer.address1+customer.address2+"\nDistrict: "+customer.state+"\nCity: "+customer.city+\
+             "\nState:"+customer.country+"\nZipCode:"+customer.zipcode+"\nEmail: "+customer.email+"\nPhone:"+customer.phone
+     #print(address)
 
- return render_template("checkoutPage.html", cartdata=cartdetails1, grand_total=grand_total, tax=tax1)
+     cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2 = getusercartdetails()
+     #logging.warning('cartdetails1, totalsum1, tax1, cartdetails2, totalsum2, tax2',totalsum1, tax1,  totalsum2, tax2)
+     grand_total= float(totalsum1+float(tax1)+totalsum2+float(tax2))
+
+     return render_template("checkoutPage.html", cartdata=cartdetails1, grand_total=grand_total, tax=tax1,address=address)
 
 
 
@@ -934,7 +949,7 @@ def createOrder():
      sendEmailconfirmation(email,ordernumber,phonenumber)
 
  return render_template("OrderPage.html", username=username, ordernumber=ordernumber,email=email,
-                                address=address, fullname=fullname, phonenumber=phonenumber)
+                                address=address, fullname=fullname, phone=phonenumber)
 
 
 
@@ -1400,6 +1415,40 @@ def displayRentalCategory(category_name=None):
 
 
 #######################################################################################3333
+@app.route("/getrentalproducts", methods=['GET'])
+def getrentalproducts():
+ products=Product.query.all()
+ #global userid
+ loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
+ #logging.warning('userid',userid)
+ if isUserAdmin() == 2:
+     products = RentalProduct.query.all()
+     #global userid
+     #userid, fname = User.query.with_entities(User.userid, User.fname).filter(User.email == session['email']).first()
+     return render_template('adminProducts.html', products=products,firstName=firstName, loggedIn=loggedIn, isadmin=isadmin,
+                            userid=userid,productCountinKartForGivenUser=productCountinKartForGivenUser,admin=False)
+ else:
+     try:
+         #userid=request.args.get('userid')
+         if isUserAdmin() != 2:
+             products = RentalProducerProduct.query.with_entities(RentalProducerProduct.productid).filter(
+                 RentalProducerProduct.producerid == userid) \
+                     .join(RentalProduct, RentalProduct.productid == RentalProducerProduct.productid) \
+                     .add_columns(RentalProduct.productid, RentalProduct.product_name, RentalProduct.description, RentalProduct.image, RentalProduct.quantity,
+                                  RentalProduct.regular_price,
+                                  RentalProduct.product_review).all()
+         return render_template('adminRentalProducts.html', products=products, firstName=firstName, loggedIn=loggedIn,
+                                isadmin=isadmin,
+                                userid=userid, productCountinKartForGivenUser=productCountinKartForGivenUser)
+     except:
+         pass
+
+
+
+ return render_template('adminRentalProducts.html', products=products,firstName=firstName, loggedIn=loggedIn, isadmin=isadmin, userid=userid,
+                        productCountinKartForGivenUser=productCountinKartForGivenUser)
+
+#############################################################################################################################
 @app.route("/rentalproductDescription")
 def rentalproductDescription():
  #logging.warning('inside rentalproductdescription ')

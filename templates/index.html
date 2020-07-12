@@ -148,10 +148,20 @@
 
 					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" id="id_catSel">
 						 <option value="">Select Category</option>
-                                       {% for row in categoryData %}
-						             <option value="{{row.category_name}}" placeholder="select Loc">{{row.category_name}}</option>
-                                    {% endfor %}
+						     <option value="" style="color:blue"><strong>BUY:</strong></option>
+
+						   {% for row in categoryDict["Buy"] %}
+						    <option value="{{row.category_name}}" placeholder="select Loc">&#160;&#160;&#160;{{row.category_name}}</option>
+						    {%endfor%}
+						    <option value="" style="color:blue"><strong>RENT:</strong></option>
+
+						   {% for row in categoryDict["Rent"] %}
+						    <option value="{{row.category_name}}" placeholder="select Loc">&#160;&#160;&#160;{{row.category_name}}</option>
+						    {%endfor%}
+
 					 </select><br>
+
+
 
 					 <select id="citySel" name="citySel" size="1"  class="form-control" maxlength="75"  id="id_citytSel">
 						 <option value="">Select City</option>

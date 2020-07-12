@@ -83,6 +83,24 @@
                                     </h4>
                                 </div>
                             </div>
+                        {% if 'email' in session  %}
+                        <table class="table table-striped">
+                                                    <tr>
+                                                        <td>
+                                                                <ul>
+
+                                                                    <li><strong>HOME ADDRESS</strong></li>
+                                                                    <li>{{address}}</li>
+
+                                                                </ul>
+                                                            </td>
+
+                                                        </tr>
+                        </table>
+                        <label>
+                  <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as Home address
+                         </label>
+                        {%else%}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
@@ -176,6 +194,10 @@
                                     </div>
                                 </div>
                             </div>
+
+                        {%endif%}
+
+
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
