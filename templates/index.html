@@ -146,14 +146,14 @@
 					 <!--<input class="col-md-4" type="text" class="form-control" placeholder="All Categories"  name="category" />
 					 <input class="col-md-4" type="text" class="form-control" placeholder="All Cities"  name="city_name" />-->
 
-					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" required id="id_catSel">
+					 <select id="catSel" name="catSel" size="1"  class="form-control" maxlength="75" id="id_catSel">
 						 <option value="">Select Category</option>
                                        {% for row in categoryData %}
 						             <option value="{{row.category_name}}" placeholder="select Loc">{{row.category_name}}</option>
                                     {% endfor %}
 					 </select><br>
 
-					 <select id="citySel" name="citySel" size="1"  class="form-control" maxlength="75" required id="id_citytSel">
+					 <select id="citySel" name="citySel" size="1"  class="form-control" maxlength="75"  id="id_citytSel">
 						 <option value="">Select City</option>
                                        {% for row in locationData %}
 						             <option value="{{row.city}}" placeholder="select Loc">{{row.city}}</option>
@@ -161,7 +161,7 @@
 					 </select>
 				 </div>
 
-					 <button type="submit" class="col-md-2 form-control btn btn-warning"  aria-label="Click to search">SEARCH</button>
+					 <button type="submit" class="col-md-2 form-control btn btn-warning"  aria-label="Click to search">SEARCH FARMERS</button>
 
 
 			 </form>
