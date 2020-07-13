@@ -642,19 +642,20 @@ class checkoutForm(FlaskForm):
 # Gets form data for the sales transaction
 
 def extractOrderdetails(request, totalsum):
-    customer = User.query.filter_by(email=session['email']).first()
-    if customer:
-        fullname = customer.fname+" "+customer.lname
-        email = customer.email
-        address = customer.address1 + customer.address2 + "\nDistrict: " + customer.state + "\nCity: " + customer.city + \
-                  "\nState:" + customer.country + "\nZipCode:" + customer.zipcode
-        #address = customer.address1+" "+customer.address1
-        phone = customer.phone
-        city = customer.city
-        state = customer.state
-        zipcode = customer.zipcode
+    try:
+        customer = User.query.filter_by(email=session['email']).first()
+        if customer:
+            fullname = customer.fname+" "+customer.lname
+            email = customer.email
+            address = customer.address1 + customer.address2 + "\nDistrict: " + customer.state + "\nCity: " + customer.city + \
+                      "\nState:" + customer.country + "\nZipCode:" + customer.zipcode
+            #address = customer.address1+" "+customer.address1
+            phone = customer.phone
+            city = customer.city
+            state = customer.state
+            zipcode = customer.zipcode
 
-    else:
+    except:
         fullname = request.form['first_name']
         email = request.form['email']
         address = request.form['address_line_1']
@@ -674,8 +675,8 @@ def extractOrderdetails(request, totalsum):
     orderdate = datetime.utcnow()
 
     loggedIn, firstName, noOfItems, userId = getLoginUserDetails()
-    orderid=random.randint(50,999999)
-    order = Order(orderid=orderid,order_date=orderdate, total_price=totalsum, userid=userId)
+    #orderid=random.randint(50,999999)
+    order = Order(order_date=orderdate, total_price=totalsum, userid=userId)
     db.session.add(order)
     db.session.flush()
     db.session.commit()
