@@ -11,7 +11,7 @@ from PIL import Image
 #import plotly.graph_objs as go
 from flask import Markup,flash
 from models import *
-from forms import * 
+from forms import *
 #from forms import getLoginUserDetails
 from flask import session
 import random
@@ -127,7 +127,7 @@ def blog():
     #page = request.args.get('page', 1, type=int)
     posts = Post.query.all()
     #posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('Fdblog.html',posts=posts,blog=True)
+    return render_template('FDblog.html',posts=posts,blog=True)
 
 @app.route("/post/new", methods=['GET', 'POST'])
 def new_post():

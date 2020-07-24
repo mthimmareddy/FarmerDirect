@@ -642,8 +642,9 @@ class checkoutForm(FlaskForm):
 # Gets form data for the sales transaction
 
 def extractOrderdetails(request, totalsum):
-    customer = User.query.filter_by(email=session['email']).first()
-    if customer:
+    try:
+        customer = User.query.filter_by(email=session['email']).first()
+
         fullname = customer.fname+" "+customer.lname
         email = customer.email
         address = customer.address1 + customer.address2 + "\nDistrict: " + customer.state + "\nCity: " + customer.city + \
@@ -654,7 +655,7 @@ def extractOrderdetails(request, totalsum):
         state = customer.state
         zipcode = customer.zipcode
 
-    else:
+    except:
         fullname = request.form['first_name']
         email = request.form['email']
         address = request.form['address_line_1']
@@ -797,7 +798,7 @@ def sendEmailconfirmation(email,ordernumber,phonenumber):
 
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
-    sender_email = "manjujnv87@gmail.com"
+    sender_email = "servinglocalindia@gmail.com"
     receiver_email = email
     password = "Brave@2020"
     # Create the plain-text and HTML version of your message
@@ -853,7 +854,7 @@ def sendForgotEmail(email):
     message["From"] = sender_email
     message["To"] = receiver_email
     text = "You're receiving this e-mail because you requested a password reset for your user account at servinglocalindia." \
-           "Please go to the following page and choose a new password:http://127.0.0.1:5000/reset_password/confirm/{0}".format(str(email))
+           "Please go to the following page and choose a new password:http://servinglocalindia.pythonanywhere.com/reset_password/confirm/{0}".format(str(email))
     part1 = MIMEText(text, "plain")
     message.attach(part1)
 
