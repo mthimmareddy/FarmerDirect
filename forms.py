@@ -644,18 +644,7 @@ class checkoutForm(FlaskForm):
 def extractOrderdetails(request, totalsum):
     try:
         customer = User.query.filter_by(email=session['email']).first()
-<<<<<<< HEAD
 
-        fullname = customer.fname+" "+customer.lname
-        email = customer.email
-        address = customer.address1 + customer.address2 + "\nDistrict: " + customer.state + "\nCity: " + customer.city + \
-                  "\nState:" + customer.country + "\nZipCode:" + customer.zipcode
-        #address = customer.address1+" "+customer.address1
-        phone = customer.phone
-        city = customer.city
-        state = customer.state
-        zipcode = customer.zipcode
-=======
         if customer:
             fullname = customer.fname+" "+customer.lname
             email = customer.email
@@ -666,7 +655,6 @@ def extractOrderdetails(request, totalsum):
             city = customer.city
             state = customer.state
             zipcode = customer.zipcode
->>>>>>> 600fa07af75ba13d7534506c6aba2494d5fe9311
 
     except:
         fullname = request.form['first_name']
