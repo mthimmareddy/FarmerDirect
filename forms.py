@@ -644,6 +644,7 @@ class checkoutForm(FlaskForm):
 def extractOrderdetails(request, totalsum):
     try:
         customer = User.query.filter_by(email=session['email']).first()
+<<<<<<< HEAD
 
         fullname = customer.fname+" "+customer.lname
         email = customer.email
@@ -654,6 +655,18 @@ def extractOrderdetails(request, totalsum):
         city = customer.city
         state = customer.state
         zipcode = customer.zipcode
+=======
+        if customer:
+            fullname = customer.fname+" "+customer.lname
+            email = customer.email
+            address = customer.address1 + customer.address2 + "\nDistrict: " + customer.state + "\nCity: " + customer.city + \
+                      "\nState:" + customer.country + "\nZipCode:" + customer.zipcode
+            #address = customer.address1+" "+customer.address1
+            phone = customer.phone
+            city = customer.city
+            state = customer.state
+            zipcode = customer.zipcode
+>>>>>>> 600fa07af75ba13d7534506c6aba2494d5fe9311
 
     except:
         fullname = request.form['first_name']
@@ -675,8 +688,8 @@ def extractOrderdetails(request, totalsum):
     orderdate = datetime.utcnow()
 
     loggedIn, firstName, noOfItems, userId = getLoginUserDetails()
-    orderid=random.randint(50,999999)
-    order = Order(orderid=orderid,order_date=orderdate, total_price=totalsum, userid=userId)
+    #orderid=random.randint(50,999999)
+    order = Order(order_date=orderdate, total_price=totalsum, userid=userId)
     db.session.add(order)
     db.session.flush()
     db.session.commit()
@@ -974,7 +987,7 @@ def sendAlertNotification(email):
 
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
-    sender_email = "manjujnv87@gmail.com"
+    sender_email = "servinglocalindia@gmail.com"
     receiver_email = email
     password = "Brave@2020"
     # Create the plain-text and HTML version of your message

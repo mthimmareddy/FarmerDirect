@@ -15,6 +15,7 @@ from forms import *
 #from forms import getLoginUserDetails
 from flask import session
 import random
+from flask import jsonify
 
 from flask import url_for, flash, redirect
 from flask_wtf import FlaskForm
@@ -202,6 +203,8 @@ def farmers():
        msg_city="SHOWING THE ALL PRODUCTS FROM ALL LOCATIONS"
        if city_name and category_name:
            data = getFarmerData(city_name=city_name,category_name=category_name)
+
+           print(jsonify(data))
            msg = "SHOWING THE ALL PRODUCTS OF {1} FROM {0}".format(city_name.upper(),category_name.upper())
 
 
@@ -217,10 +220,15 @@ def productAlertNotification():
     if request.method == 'POST':
         email = request.form['email']
         print('email',email)
-        status=sendAlertNotification(email=email)
-        #print('Status',status)
-        if status:
-            flash('Alert message sent success')
+        try:
+            status=sendAlertNotification(email=email)
+            #print('Status',status)
+            if status:
+                flash('Alert message sent success')
+        except:
+            #print('sending Email failed')
+
+            flash('Alert message sent failes')
     return render_template('productAlertNotification.html')
 
 
@@ -948,7 +956,10 @@ def createOrder():
  email, username, ordernumber, address, fullname, phonenumber = extractOrderdetails(request, totalsum)
  if email:
      #sendEmailconfirmation(email, username, ordernumber, phonenumber, provider)
-     sendEmailconfirmation(email,ordernumber,phonenumber)
+     try:
+         sendEmailconfirmation(email,ordernumber,phonenumber)
+     except:
+         flash('Email sending failed')
 
  return render_template("OrderPage.html", username=username, ordernumber=ordernumber,email=email,
                                 address=address, fullname=fullname, phone=phonenumber)
