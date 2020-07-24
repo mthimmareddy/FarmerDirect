@@ -21,7 +21,7 @@ class User(db.Model):
     state = db.Column(db.String(20), unique=False, nullable=False)
     country = db.Column(db.String(20), unique=False, nullable=False)
     zipcode = db.Column(db.String(20), unique=False, nullable=False)
-    email = db.Column(db.String(120), unique=True,nullable=False)
+    email = db.Column(db.String(120), unique=False,nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     isadmin = db.Column(db.Integer, nullable=False, default=0)
     image_file = db.Column(db.String(200), nullable=False, default='default.jpg')

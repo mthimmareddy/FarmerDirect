@@ -798,7 +798,7 @@ def sendEmailconfirmation(email,ordernumber,phonenumber):
 
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
-    sender_email = "manjujnv87@gmail.com"
+    sender_email = "servinglocalindia@gmail.com"
     receiver_email = email
     password = "Brave@2020"
     # Create the plain-text and HTML version of your message
@@ -974,7 +974,7 @@ def sendAlertNotification(email):
 
     port = 587  # For starttls
     smtp_server = "smtp.gmail.com"
-    sender_email = "manjujnv87@gmail.com"
+    sender_email = "servinglocalindia@gmail.com"
     receiver_email = email
     password = "Brave@2020"
     # Create the plain-text and HTML version of your message
