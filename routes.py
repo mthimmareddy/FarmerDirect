@@ -197,6 +197,21 @@ def farmers():
        city_name = request.args.get('citySel')
        print(category_name)
        data= getFarmerData()
+       print('Farmer data:{0}:',data)
+       data1='{"name":"Manjula", "id":2, "category":["Vegetables", "Bakery", "Fruits"] }'
+
+
+       #d=jsonify(data1)
+       import json
+       d=json.loads(data1)
+       print(type(d),d)
+       for k,v in d.items():
+           print('{0}:{1}'.format(k,v))
+       d=jsonify(d)
+       print(type(d), d)
+
+
+       #print(type(data1),jsonify(data1))
        msg = "SHOWING THE FARMERS LISTING ALL CATEGORIES"
 
 
@@ -206,14 +221,10 @@ def farmers():
 
            print(jsonify(data))
            msg = "SHOWING THE ALL PRODUCTS OF {1} FROM {0}".format(city_name.upper(),category_name.upper())
-
-
-
-
-
        return render_template('farmers.html',loggedIn=loggedIn, firstName=firstName,
                               productCountinKartForGivenUser=productCountinKartForGivenUser,
-                              ProducerData=data,msg=msg,msg_city=msg_city)
+                              ProducerData=data,msg=msg,msg_city=msg_city,data1=d)
+
 
 @app.route("/productAlertNotification" , methods=['GET','POST'])
 def productAlertNotification():
@@ -363,6 +374,7 @@ def register():
 @app.route('/',methods=['GET', 'POST'])
 @app.route("/home")
 def root():
+    data1 = {"name":"Manjula", "id":2, "category":["Vegetables", "Bakery", "Fruits"] }
     loggedIn, firstName, productCountinKartForGivenUser, userid = getLoginUserDetails()
     #categoryData = getCategoryDetails()
     categoryDict={}
@@ -380,7 +392,7 @@ def root():
     locationdataall = User.query.with_entities(User.city).filter(User.isadmin != 0).all()
     locationData = list(set(locationdataall))
     #print(locationdataall,categorydata)
-    return render_template('index.html',firstName=firstName,categoryData=Data,locationData=locationData
+    return render_template('index.html',firstName=firstName,categoryData=Data,locationData=locationData,data1=jsonify(data1)
                            ,productCountinKartForGivenUser=productCountinKartForGivenUser,categoryDict=categoryDict)
 
 

@@ -29,6 +29,9 @@
     <div class="row">
 
 		<div class="col-md-12">
+			{% for key, value in data1.items() %}
+			{{ value }}
+			{% endfor %}
 
 		{% for row in ProducerData%}
 			<div class="col-md-3">
