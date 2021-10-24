@@ -17,7 +17,8 @@ from flask import session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'myscecretkey12345'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:manju123@localhost/m8'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://FarmingDirect:manju123@FarmingDirect.mysql.pythonanywhere-services.com/FarmingDirect$t1'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:manju123@localhost/m8'
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://servinglocalindi:manju123@servinglocalindia.mysql.pythonanywhere-services.com/servinglocalindi$l1'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -31,11 +32,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 ######### Required in Case of firing complex queries without ORM #########
 #db2 = yaml.load(open('config.yaml'))
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_HOST'] = 'FarmingDirect.mysql.pythonanywhere-services.com'
+app.config['MYSQL_USER'] = 'FarmingDirect'
 
 app.config['MYSQL_PASSWORD'] = 'manju123'
-app.config['MYSQL_DB'] = 'm8'
+app.config['MYSQL_DB'] = 't1'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 ######### Required in Case of firing complex queries without ORM #########
@@ -48,6 +49,9 @@ mysql = MySQL(app)
 import models
 import routes
 models.db.create_all()
+from routes import app
 
+if __name__=="__main__":
+    app.run(host="127.0.0.1",port=8000, debug=True)
 
 

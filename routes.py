@@ -6,7 +6,7 @@ import secrets
 from flask import render_template, request,abort
 from __init__ import *
 #from __init__ import db,mysql
-from PIL import Image
+#from PIL import Image
 #from plotly.offline import plot
 #import plotly.graph_objs as go
 from flask import Markup,flash
